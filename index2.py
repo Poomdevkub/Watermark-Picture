@@ -59,13 +59,13 @@ def extract_watermark(marked_image, original_image, alpha=0.01):
 
 # ตัวอย่างการทดสอบ
 # โหลดภาพต้นฉบับและลายน้ำ
-image = cv2.imread('image.jpg', 0)  # โหลดภาพในโหมด grayscale
-watermark = cv2.imread('watermark.jpg', 0)  # โหลดลายน้ำในโหมด grayscale
+image = cv2.imread('original_image.png', 0)  # โหลดภาพในโหมด grayscale
+watermark = cv2.imread('watermark_image.png', 0)  # โหลดลายน้ำในโหมด grayscale
 
 # ฝังลายน้ำ
 marked_image = embed_watermark(image, watermark, alpha=0.05)
-cv2.imwrite('marked_image.jpg', marked_image)
+cv2.imwrite('marked_image.png', marked_image)
 
 # สกัดลายน้ำ
 extracted_watermark = extract_watermark(marked_image, image, alpha=0.05)
-cv2.imwrite('extracted_watermark.jpg', extracted_watermark)
+cv2.imwrite('extracted_watermark.png', extracted_watermark)
