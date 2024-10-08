@@ -8,7 +8,7 @@
  .home{
     width: 100%;
     min-height: 100vh;
-    background-image: url('../Watermark-Picture/images/modern.jpg');
+    background-image: url('images/modern.jpg');
     background-position: center;
     background-size: cover;
     padding: 10px 10%;
