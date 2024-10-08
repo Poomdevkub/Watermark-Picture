@@ -35,7 +35,14 @@
  
  .logo{
     width: 140px;
+    vertical-align: middle; 
  }
+
+ .logo-text {
+    font-size: 20px;
+    vertical-align: left;
+    display: inline;
+}
 
  nav ul li {
     display: inline-block;
