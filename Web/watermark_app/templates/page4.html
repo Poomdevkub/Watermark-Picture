@@ -1,0 +1,56 @@
+<!-- page4.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Page 4 - Group Members</title>
+    <style>
+        body {
+            margin-top: 56px; /* เพิ่ม margin-top เพื่อหลีกเลี่ยงการซ้อนทับกับ Navigation Bar */
+        }
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center; /* ทำให้ข้อความอยู่กลาง */
+            margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
+        }
+        .member {
+            margin: 15px 0; /* ระยะห่างระหว่างสมาชิก */
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'navigation.html' %} <!-- เรียกใช้ Navigation Bar ที่นี่ -->
+
+    <div class="container">
+        <h2 class="page-title">Group Members</h2>
+        
+        <div class="member">
+            <strong>Name:</strong> John Doe <br>
+            <strong>Surname:</strong> Smith <br>
+            <strong>Student ID:</strong> 123456
+        </div>
+        
+        <div class="member">
+            <strong>Name:</strong> Jane <br>
+            <strong>Surname:</strong> Doe <br>
+            <strong>Student ID:</strong> 123457
+        </div>
+        
+        <div class="member">
+            <strong>Name:</strong> Alice <br>
+            <strong>Surname:</strong> Johnson <br>
+            <strong>Student ID:</strong> 123458
+        </div>
+        
+        <div class="member">
+            <strong>Name:</strong> Bob <br>
+            <strong>Surname:</strong> Brown <br>
+            <strong>Student ID:</strong> 123459
+        </div>
+    </div>
+</body>
+</html>
