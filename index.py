@@ -44,7 +44,7 @@ if watermark_array.shape[0] > original_array.shape[0] // 2 or watermark_array.sh
     watermark_array = watermark_array[:original_array.shape[0] // 2, :original_array.shape[1] // 2]
 
 # ฝังลายน้ำในช่องสี
-watermarked_array = embed_watermark_dwt_rgb(original_array, watermark_array, alpha=0.25)
+watermarked_array = embed_watermark_dwt_rgb(original_array, watermark_array, alpha=0.5)
 
 # สร้างและบันทึกภาพที่มีลายน้ำ
 watermarked_image = array_to_image(watermarked_array)
