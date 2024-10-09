@@ -106,6 +106,7 @@ nav ul li a {
    width: 530px;
    float: right;
    position: absolute;
+   top: 30%;
    bottom: 0;
    right: 10%;
 }
