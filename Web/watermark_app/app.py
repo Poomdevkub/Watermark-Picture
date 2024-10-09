@@ -46,21 +46,25 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/page1')
+@app.route('/watermark-photos')
 def page1():
-    return render_template('page1.html')
+    return render_template('Watermark Photos.html')
 
-@app.route('/page2')
+@app.route('/make-watermark')
 def page2():
-    return render_template('page2.html')
+    return render_template('Make watermark.html')
 
-@app.route('/page3')
+@app.route('/detect-watermark')
 def page3():
-    return render_template('page3.html')
+    return render_template('Detect watermark.html')
 
-@app.route('/page4')
+@app.route('/delete-watermark')
 def page4():
-    return render_template('page4.html')
+    return render_template('Delete watermark.html')
+
+@app.route('/group-member')
+def page5():
+    return render_template('Group member.html')
 
 def dwt_svd_watermarking(image, watermark, enhanced=False):
     # Convert images to RGB
