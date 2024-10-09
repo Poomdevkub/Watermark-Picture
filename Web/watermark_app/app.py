@@ -54,9 +54,26 @@ def page1():
 def page2():
     return render_template('Make watermark.html')
 
-@app.route('/detect-watermark')
+@app.route('/detect-watermark', methods=['GET', 'POST'])
 def page3():
+    if request.method == 'POST':
+        # รับไฟล์ภาพที่อัปโหลด
+        original_image_file = request.files['original_image']
+        watermarked_image_file = request.files['watermarked_image']
+
+        if original_image_file and watermarked_image_file:
+            # เปิดภาพ
+            original_image = Image.open(original_image_file)
+            watermarked_image = Image.open(watermarked_image_file)
+
+            # ตรวจจับลายน้ำ
+            result = detect_watermark_svd(original_image, watermarked_image)
+
+            # ส่งผลลัพธ์กลับไปยังผู้ใช้
+            return render_template('Detect watermark.html', result=result)
+
     return render_template('Detect watermark.html')
+
 
 @app.route('/delete-watermark')
 def page4():
@@ -95,7 +112,7 @@ def dwt_svd_watermarking(image, watermark, enhanced=False):
         S_w_resized = np.pad(S_w, (0, max(0, len(S) - len(S_w))), mode='constant')[:min_len]
 
         # Adjust visibility of the watermark if enhanced
-        alpha = 0.01 if not enhanced else 0.9  # Higher alpha for enhanced visibility
+        alpha = 0.01 if not enhanced else 0.5  # Higher alpha for enhanced visibility
 
         # Modify singular values with the resized singular values of the watermark
         S_new = S + alpha * S_w_resized
@@ -116,6 +133,42 @@ def dwt_svd_watermarking(image, watermark, enhanced=False):
 
     return watermarked_image.astype(np.uint8)
 
+def detect_watermark_svd(original_image, watermarked_image):
+    # Convert images to RGB
+    original_image = original_image.convert('RGB')
+    watermarked_image = watermarked_image.convert('RGB')
+
+    # Convert images to numpy arrays
+    original_array = np.array(original_image)
+    watermarked_array = np.array(watermarked_image)
+
+    # Split the image into RGB channels
+    r_original, g_original, b_original = original_array[..., 0], original_array[..., 1], original_array[..., 2]
+    r_watermarked, g_watermarked, b_watermarked = watermarked_array[..., 0], watermarked_array[..., 1], watermarked_array[..., 2]
+
+    # Apply DWT and SVD for watermark detection
+    def check_watermark_channel(original_channel, watermarked_channel):
+        # Apply DWT
+        coeffs_original = pywt.dwt2(original_channel, 'haar')
+        coeffs_watermarked = pywt.dwt2(watermarked_channel, 'haar')
+
+        LL_original, _ = coeffs_original
+        LL_watermarked, _ = coeffs_watermarked
+
+        # Apply SVD
+        _, S_original, _ = svd(LL_original, full_matrices=False)
+        _, S_watermarked, _ = svd(LL_watermarked, full_matrices=False)
+
+        # Compare singular values
+        return np.allclose(S_original, S_watermarked, atol=0.1)  # Tolerance level for differences
+
+    # Check watermark on each channel
+    r_detected = not check_watermark_channel(r_original, r_watermarked)
+    g_detected = not check_watermark_channel(g_original, g_watermarked)
+    b_detected = not check_watermark_channel(b_original, b_watermarked)
+
+    # If watermark detected in any channel, return True
+    return r_detected or g_detected or b_detected
 
 @app.route('/download/<filename>')
 def download_file(filename):
