@@ -1,64 +1,63 @@
- *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
- }
-
- .hero{
-    width: 100%;
-    min-height: 100vh;
-    background-image: url('images/modern.jpg');
-    background-position: center;
-    background-size: cover;
-    padding: 10px 10%;
-    overflow: hidden;
- } 
-
- .hero::before {
-    content: ''; /* ต้องมีเพื่อให้ pseudo-element ทำงาน */
-    position: absolute; /* วางซ้อนอยู่บน .hero */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.178); /* ปรับ RGBA ตามที่ต้องการ เช่น 0.5 คือความทึบ 50% */
-    z-index: 1; /* ทำให้เลเยอร์นี้อยู่เหนือภาพพื้นหลัง */
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   font-family: 'Poppins', sans-serif;
 }
 
- nav{
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
- }
- 
- .logo{
-    width: 140px;
-    vertical-align: middle;
-    margin-right: 0; 
- }
+.hero {
+   width: 100%;
+   min-height: 100vh;
+   background-image: url('images/modern.jpg');
+   background-position: center;
+   background-size: cover;
+   background-attachment: fixed; /* ทำให้พื้นหลังเลื่อนตามได้ */
+   padding: 10px 10%;
+   overflow: hidden;
+   position: relative;
+}
 
- /* .logo-text {
-    margin-left: 0;
-    font-size: 20px;
-    vertical-align: left;
-    display: inline;
-} */
+.hero::before {
+   content: ''; 
+   position: absolute; 
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: rgba(0, 0, 0, 0.178); /* ความทึบของพื้นหลัง */
+   z-index: 1;
+}
 
- nav ul li {
-    display: inline-block;
-    list-style: none;
-    margin: 10px 15px;
- }
+.content {
+   position: relative;
+   z-index: 2;
+}
 
- nav ul li a {
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: 400;
- }
+nav {
+   padding: 10px 0;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
 
- .bth{
+.logo {
+   width: 140px;
+   vertical-align: middle;
+}
+
+nav ul li {
+   display: inline-block;
+   list-style: none;
+   margin: 10px 15px;
+}
+
+nav ul li a {
+   text-decoration: none;
+   color: #ffffff;
+   font-weight: 400;
+}
+
+.bth {
    display: inline-block;
    text-decoration: none;
    padding: 14px 40px;
@@ -67,24 +66,79 @@
    font-size: 14px;
    border-radius: 30px;
    border-top-right-radius: 0;
- }
+   transition: all 0.5s ease;
+}
 
- .content{
+.bth:hover {
+   background-image: linear-gradient(45deg, #c430d7, #df4881);
+   padding: 16px 85px; /* ขยายขนาดของปุ่มเล็กน้อย */
+   transform: scale(1.05); /* ขยายปุ่มเล็กน้อย */
+   border-top-right-radius: 30px;
+}
+
+.content {
    margin-top: 10%;
    max-width: 600px;
- }
+}
 
- .content h1{
+.content h1 {
    font-size: 70px;
    color: #ffffff;
- }
+}
 
- .content p{
+.content p {
    margin: 10px 0 30px;
    color: #ffffff;
- }
+   animation-delay: 0.5s;
+}
 
- .content .bth{
+.content .bth {
    padding: 15px 80px;
    font-size: 16px;
- }
+   animation-delay: 1s;
+}
+
+.bth:hover {
+   border-top-right-radius: 30px;
+}
+
+.feature-img {
+   width: 530px;
+   float: right;
+   position: absolute;
+   bottom: 0;
+   right: 10%;
+}
+
+.feature-img.anim {
+   animation-delay: 1.5s;
+}
+
+.anim {
+   opacity: 0;
+   transform: translateY(30px);
+   animation: moveup 0.5s linear forwards;
+}
+
+@keyframes moveup {
+   100% {
+       opacity: 1;
+       transform: translateY(0px);
+   }
+}
+
+.content ol {
+   margin-top: 20px; /* เพิ่มระยะห่างระหว่างข้อความอธิบายกับปุ่ม */
+   margin-left: 20px;
+   color: #ffffff; /* สีขาว */
+   line-height: 1.6; /* ปรับระยะห่างบรรทัดให้อ่านง่าย */
+}
+
+.content li {
+   margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรายการ */
+}
+
+/* แก้ไขเพื่อให้สามารถเลื่อนหน้าเว็บได้ */
+body {
+   overflow-y: scroll;
+}
