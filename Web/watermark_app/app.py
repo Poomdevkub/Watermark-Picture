@@ -11,8 +11,12 @@ app = Flask(__name__)
 if not os.path.exists('static/outputs'):
     os.makedirs('static/outputs')
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/')
+def page1():
+    return render_template('index.html')
+
+@app.route('/make-watermark', methods=['GET', 'POST'])
+def page2():
     if request.method == 'POST':
         # Get the uploaded files
         image_file = request.files['image']
@@ -40,18 +44,10 @@ def index():
             Image.fromarray(enhanced_watermarked_image).save(enhanced_output_path)
 
             # After processing, show download links
-            return render_template('index.html', 
+            return render_template('Make watermark.html', 
                                    download_link=output_filename, 
                                    enhanced_download_link=enhanced_output_filename)
 
-    return render_template('index.html')
-
-@app.route('/watermark-photos')
-def page1():
-    return render_template('Watermark Photos.html')
-
-@app.route('/make-watermark')
-def page2():
     return render_template('Make watermark.html')
 
 @app.route('/detect-watermark', methods=['GET', 'POST'])
