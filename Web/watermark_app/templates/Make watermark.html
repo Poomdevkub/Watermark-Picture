@@ -6,6 +6,33 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Watermarking Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- Include custom styles -->
+    <style>
+        /* เรียกใช้ background */
+        body {
+            min-height: 100vh;
+            background-image: url('/static/images/modern.jpg');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed; /* ทำให้พื้นหลังเลื่อนตามได้ */
+            padding: 10px 10%;
+            overflow: hidden;
+            position: relative;
+        }
+        body::before {
+            content: ''; 
+            position: absolute; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.178); /* ความทึบของพื้นหลัง */
+            z-index: 1;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
 </head>
 <body>
 
