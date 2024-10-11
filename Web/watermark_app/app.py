@@ -75,9 +75,27 @@ def page3():
     return render_template('Detect watermark.html')
 
 
-@app.route('/delete-watermark')
+@app.route('/delete-watermark', methods=['GET', 'POST'])
 def page4():
+    if request.method == 'POST':
+        # รับพารามิเตอร์จากฟอร์ม เช่น ไฟล์รูปภาพและตำแหน่งลายน้ำ
+        image_file = request.files['image']
+        x = int(request.form['x'])
+        y = int(request.form['y'])
+        w = int(request.form['w'])
+        h = int(request.form['h'])
+
+        # บันทึกรูปภาพที่อัพโหลด
+        image_path = 'static/' + image_file.filename
+        image_file.save(image_path)
+
+        # ลบลายน้ำโดยเบลอบริเวณที่กำหนด
+        edited_image_path = remove_watermark(image_path, x, y, w, h)
+
+        return render_template('Delete watermark.html', edited_image=edited_image_path)
+
     return render_template('Delete watermark.html')
+
 
 @app.route('/group-member')
 def page5():
@@ -169,6 +187,29 @@ def detect_watermark_svd(original_image, watermarked_image):
 
     # If watermark detected in any channel, return True
     return r_detected or g_detected or b_detected
+
+
+# ฟังก์ชันสำหรับเบลอลายน้ำ
+def remove_watermark(image_path, x, y, w, h):
+    # โหลดรูปภาพ
+    image = cv2.imread(image_path)
+
+    # ส่วนที่ลายน้ำอยู่ (ระบุตำแหน่ง x, y, w, h)
+    watermark_area = image[y:y+h, x:x+w]
+
+    # เบลอบริเวณที่มีลายน้ำ
+    blurred = cv2.GaussianBlur(watermark_area, (51, 51), 0)
+
+    # นำบริเวณที่เบลอกลับไปใส่ในภาพเดิม
+    image[y:y+h, x:x+w] = blurred
+
+    # บันทึกรูปภาพที่ถูกแก้ไข
+    output_path = 'static/edited_image.jpg'
+    cv2.imwrite(output_path, image)
+
+    return output_path
+
+
 
 @app.route('/download/<filename>')
 def download_file(filename):
