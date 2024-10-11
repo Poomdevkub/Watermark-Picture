@@ -4,37 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Watermarking Page</title>
+    <title>Water Mark Picture</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- เพิ่มบรรทัดนี้ -->
 </head>
 <body>
 
     {% include 'navigation.html' %}
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Watermarking</h5>
-        <p class="card-text text-center">Upload an image and watermark it using DWT+SVD.</p>
-        
-        <form action="/" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="image">Select Image</label>
-                <input type="file" class="form-control" id="image" name="image" required>
-            </div>
-            <div class="form-group">
-                <label for="watermark">Select Watermark</label>
-                <input type="file" class="form-control" id="watermark" name="watermark" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Upload</button>
-        </form>
-        
-        <h6 class="mt-3 text-center">Download Links:</h6>
-<a href="{{ url_for('download_file', filename=download_link) }}" class="btn btn-success btn-block">Download Watermarked Image</a>
-<a href="{{ url_for('download_file', filename=enhanced_download_link) }}" class="btn btn-warning btn-block">Download Enhanced Watermarked Image</a>
-
+    <div class="hero">
+        <div class="content">
+        <h1 class="anim">Make<br>Watermark</h1>
+        <p class="anim">
+            A watermark is a recognizable text or image overlay placed on digital content,<br> 
+            such as images, videos, or documents, to protect or signify ownership, authenticity,<br>  
+            or copyright. Watermarks are often semi-transparent and are placed over the content <br> 
+            in a way that does not obstruct its primary message but makes it harder for others to <br>
+            use the content without permission.
+        </p>
+        <a href="#" class="bth anim">Make Now</a>
+        <p class="anim">
+            <br>How to add a watermark:
+        </p>
+        <ol>
+            <li>Select the image you want to add a watermark to (original image).</li>
+            <li>Choose the image that will become the watermark.</li>
+            <li>Upload both images.</li>
+            <li>Wait for the system to create the watermark.</li>
+            <li>Download your watermarked image.</li>
+            <li>The Enhanced image is the one that adjusts the intensity of the watermark to make it more visible.</li>
+        </ol>
     </div>
 </div>
-
+    <img src="{{ url_for('static', filename='images/Screenshot.png') }}" class="feature-img anim">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
