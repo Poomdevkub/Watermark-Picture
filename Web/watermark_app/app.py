@@ -15,43 +15,55 @@ if not os.path.exists('static/outputs'):
 def page1():
     return render_template('index.html')
 
-@app.route('/make-watermark', methods=['GET', 'POST'])
-def page2():
+#ยังไม่เสร็จ
+#---
+@app.route('/make-watermark-dwt', methods=['GET', 'POST'])
+def make_watermark_dwt_page():
     if request.method == 'POST':
         # Get the uploaded files
         image_file = request.files['image']
         watermark_file = request.files['watermark']
 
         if image_file and watermark_file:
-            # Open the images
             image = Image.open(image_file)
             watermark = Image.open(watermark_file)
 
-            # Apply DWT and SVD watermarking (normal visibility)
+            # watermarked_image = dwt_watermarking(image, watermark) ******************************
+
+            output_filename = 'watermarked_image_dwt.png'
+            output_path = os.path.join('static/outputs', output_filename)
+            # Image.fromarray(watermarked_image).save(output_path) ******************************
+
+            return render_template('Make watermark.html', download_link=output_filename)
+
+    return render_template('Make watermark_DWT.html')
+#---
+
+
+@app.route('/make-watermark-dwt-svd', methods=['GET', 'POST'])
+def make_watermark_dwt_svd_page():
+    if request.method == 'POST':
+        # Get the uploaded files
+        image_file = request.files['image']
+        watermark_file = request.files['watermark']
+
+        if image_file and watermark_file:
+            image = Image.open(image_file)
+            watermark = Image.open(watermark_file)
+
+            # Apply DWT+SVD watermarking
             watermarked_image = dwt_svd_watermarking(image, watermark)
 
-            # Apply DWT and SVD watermarking (enhanced visibility)
-            enhanced_watermarked_image = dwt_svd_watermarking(image, watermark, enhanced=True)
-
-            # Save the output images to the static/outputs folder
-            output_filename = 'watermarked_image.png'
-            enhanced_output_filename = 'watermarked_image_enhanced.png'
-
+            output_filename = 'watermarked_image_dwt_svd.png'
             output_path = os.path.join('static/outputs', output_filename)
-            enhanced_output_path = os.path.join('static/outputs', enhanced_output_filename)
-
             Image.fromarray(watermarked_image).save(output_path)
-            Image.fromarray(enhanced_watermarked_image).save(enhanced_output_path)
 
-            # After processing, show download links
-            return render_template('Make watermark.html', 
-                                   download_link=output_filename, 
-                                   enhanced_download_link=enhanced_output_filename)
+            return render_template('Make watermark.html', download_link=output_filename)
 
-    return render_template('Make watermark.html')
+    return render_template('Make watermark_DWT+SVD.html')
 
-@app.route('/detect-watermark', methods=['GET', 'POST'])
-def page3():
+@app.route('/detect-watermark-original', methods=['GET', 'POST'])
+def detect_watermark_original_page():
     if request.method == 'POST':
         # รับไฟล์ภาพที่อัปโหลด
         original_image_file = request.files['original_image']
@@ -66,13 +78,34 @@ def page3():
             result = detect_watermark_svd(original_image, watermarked_image)
 
             # ส่งผลลัพธ์กลับไปยังผู้ใช้
-            return render_template('Detect watermark.html', result=result)
+            return render_template('Detect watermark_Original.html', result=result)
+        
+    return render_template('Detect watermark_Original.html')
 
-    return render_template('Detect watermark.html')
+
+@app.route('/detect-watermark-watermarked', methods=['GET', 'POST'])
+def detect_watermark_watermarked_page():
+    if request.method == 'POST':
+        # รับไฟล์ภาพที่อัปโหลด
+        original_image_file = request.files['original_image']
+        watermarked_image_file = request.files['watermarked_image']
+
+        if original_image_file and watermarked_image_file:
+            # เปิดภาพ
+            original_image = Image.open(original_image_file)
+            watermarked_image = Image.open(watermarked_image_file)
+
+            # ตรวจจับลายน้ำ
+            result = detect_watermark_svd(original_image, watermarked_image)
+
+            # ส่งผลลัพธ์กลับไปยังผู้ใช้
+            return render_template('Detect watermark_Watermarked.html', result=result)
+
+    return render_template('Detect watermark_Watermarked.html')
 
 
 @app.route('/delete-watermark', methods=['GET', 'POST'])
-def page4():
+def page2():
     if request.method == 'POST':
         # รับพารามิเตอร์จากฟอร์ม เช่น ไฟล์รูปภาพและตำแหน่งลายน้ำ
         image_file = request.files['image']
@@ -94,7 +127,7 @@ def page4():
 
 
 @app.route('/group-member')
-def page5():
+def page3():
     return render_template('Group member.html')
 
 def dwt_svd_watermarking(image, watermark, enhanced=False):
