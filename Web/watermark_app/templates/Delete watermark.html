@@ -18,11 +18,47 @@
             overflow: hidden;
             position: relative;
         }
-
     </style>
 </head>
 <body>
     {% include 'navigation.html' %}
     
+    <div class="container d-flex justify-content-center"> 
+        <div class="card" style="width: 600px;">
+            <div class="card-body">
+                <h5 class="card-title text-center">Delete Watermark</h5>
+                <form method="POST" enctype="multipart/form-data">
+                    <label for="image">Upload Image:</label>
+                    <input type="file" name="image" required><br><br>
+                    
+                    <label for="x">X:</label>
+                    <input type="text" name="x" required><br><br>
+            
+                    <label for="y">Y:</label>
+                    <input type="text" name="y" required><br><br>
+            
+                    <label for="w">Width:</label>
+                    <input type="text" name="w" required><br><br>
+            
+                    <label for="h">Height:</label>
+                    <input type="text" name="h" required><br><br>
+            
+                    <button type="submit">Delete Watermark</button>
+                </form>
+            </div>            
+        </div>
+       
+    </div>
+
+   
+
+    {% if edited_image %}
+    <h2>Edited Image:</h2>
+    <img src="{{ edited_image }}" alt="Edited Image">
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
