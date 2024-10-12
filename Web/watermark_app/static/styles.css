@@ -198,3 +198,10 @@ nav + .dwt {
    font-weight: bold; /* ทำให้ตัวหนาเพื่อความชัดเจน */
    margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างเล็กน้อย */
 }
+
+.dwt-description {
+   font-size: 18px; /* ปรับขนาดตัวอักษร */
+   color: #ffffff; /* สีขาว */
+   margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
+   text-align: left; /* จัดให้อยู่ทางซ้าย (หรือเปลี่ยนเป็น center หากต้องการให้จัดกลาง) */
+}
