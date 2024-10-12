@@ -237,3 +237,31 @@ nav + .dwt {
    margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรายการ */
    list-style-position: inside; /* ทำให้ bullet อยู่ด้านใน */
 }
+
+.watermark-steps {
+   display: flex;
+   justify-content: space-between; /* Create space between the columns */
+   flex-wrap: wrap; /* Allow wrapping for smaller screens */
+   margin-top: 30px; /* Add margin for spacing */
+}
+
+.step {
+   flex: 1; /* Allow each step to grow equally */
+   min-width: 300px; /* Minimum width for each column */
+   margin: 10px; /* Space between the columns */
+   background-color: rgba(255, 255, 255, 0.8); /* Light background for readability */
+   border-radius: 10px; /* Rounded corners */
+   padding: 20px; /* Inner padding */
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.content ol {
+   margin-top: 10px; /* Reduced margin for better spacing */
+   margin-left: 0; /* Align lists to the left */
+   color: #000; /* Change color for better contrast */
+}
+
+.content li {
+   margin-bottom: 5px; /* Reduced space between list items */
+}
+

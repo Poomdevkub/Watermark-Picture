@@ -22,35 +22,39 @@
             use the content without permission.
         </p>
         <a href="/make-watermark" class="bth anim">Make Now</a>
-        <p class="anim">
-            <br>How to add a watermark: We have 2 options are DWT and DWT + SVD.
-        </p>
-        <ol>
-            <li>Select the image you want to add a watermark to (original image).</li>
-            <li>Choose the image that will become the watermark.</li>
-            <li>Upload both images.</li>
-            <li>Wait for the system to create the watermark.</li>
-            <li>Download your watermarked image.</li>
-            <li>The Enhanced image is the one that adjusts the intensity of the watermark to make it more visible.</li>
-        </ol>
-        <p class="anim">
-            <br>Steps to Detect a Watermark:
-        </p>
-        <ol>
-            <li>Upload Original Image: Select and upload the original image that you want to use for watermark detection.</li>
-            <li>Upload Watermarked Image: Select and upload the image that you suspect may contain the watermark.</li>
-            <li>Click the "Detect a Watermark" Button: Press the button labeled "Detect a Watermark" and wait for the system to analyze the images.</li>
-            <li>Receive Detection Results: Once the analysis is complete, the system will notify you of the results. If a watermark is detected, the system will alert you that a watermark has been found. If no watermark is found, the system will inform you that no watermark is present.</li>
-        </ol>
-        <p class="anim">
-            <br>Steps to Delete a Watermark:
-        </p>
-        <ol>
-            <li>Upload Original Image: Select and upload the original image that you want to use for watermark detection.</li>
-            <li>Upload Watermarked Image: Select and upload the image that you suspect may contain the watermark.</li>
-            <li>Click the "Delete a Watermark" Button: Press the button labeled "Delete Watermark" and wait for the system to analyze the images.</li>
-            <li>Receive Detection Results:  Once the process is done, you will receive the image with the watermark successfully removed.</li>
-    </div>
+        <div class="watermark-steps">
+            <div class="step">
+                <p class="anim">How to add a watermark: We have 2 options: DWT and DWT + SVD.</p>
+                <ol>
+                    <li>Select the image you want to add a watermark to (original image).</li>
+                    <li>Choose the image that will become the watermark.</li>
+                    <li>Upload both images.</li>
+                    <li>Wait for the system to create the watermark.</li>
+                    <li>Download your watermarked image.</li>
+                    <li>The Enhanced image is the one that adjusts the intensity of the watermark to make it more visible.</li>
+                </ol>
+            </div>
+            <div class="step">
+                <p class="anim">Steps to Detect a Watermark:</p>
+                <ol>
+                    <li>Upload Original Image: Select and upload the original image that you want to use for watermark detection.</li>
+                    <li>Upload Watermarked Image: Select and upload the image that you suspect may contain the watermark.</li>
+                    <li>Click the "Detect a Watermark" Button: Press the button labeled "Detect a Watermark" and wait for the system to analyze the images.</li>
+                    <li>Receive Detection Results: Once the analysis is complete, the system will notify you of the results. If a watermark is detected, the system will alert you that a watermark has been found. If no watermark is found, the system will inform you that no watermark is present.</li>
+                </ol>
+            </div>
+            <div class="step">
+                <p class="anim">Steps to Delete a Watermark:</p>
+                <ol>
+                    <li>Upload Original Image: Select and upload the original image that you want to use for watermark detection.</li>
+                    <li>Upload Watermarked Image: Select and upload the image that you suspect may contain the watermark.</li>
+                    <li>Click the "Delete a Watermark" Button: Press the button labeled "Delete Watermark" and wait for the system to analyze the images.</li>
+                    <li>Receive Detection Results: Once the process is done, you will receive the image with the watermark successfully removed.</li>
+                </ol>
+            </div>
+        </div>
+        
+        </div>
 </div>
     <img src="{{ url_for('static', filename='images/Screenshot.png') }}" class="feature-img anim">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
