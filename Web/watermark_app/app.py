@@ -83,7 +83,6 @@ def make_watermark_dwt_page():
 
 #---
 
-
 @app.route('/make-watermark-dwt-svd', methods=['GET', 'POST'])
 def make_watermark_dwt_svd_page():
     if request.method == 'POST':
@@ -92,17 +91,30 @@ def make_watermark_dwt_svd_page():
         watermark_file = request.files['watermark']
 
         if image_file and watermark_file:
+            # Open the images
             image = Image.open(image_file)
             watermark = Image.open(watermark_file)
 
-            # Apply DWT+SVD watermarking
+            # Apply DWT and SVD watermarking (normal visibility)
             watermarked_image = dwt_svd_watermarking(image, watermark)
 
-            output_filename = 'watermarked_image_dwt_svd.png'
-            output_path = os.path.join('static/outputs', output_filename)
-            Image.fromarray(watermarked_image).save(output_path)
+            # Apply DWT and SVD watermarking (enhanced visibility)
+            enhanced_watermarked_image = dwt_svd_watermarking(image, watermark, enhanced=True)
 
-            return render_template('Make watermark.html', download_link=output_filename)
+            # Save the output images to the static/outputs folder
+            output_filename = 'watermarked_image_dwt_svd.png'
+            enhanced_output_filename = 'watermarked_image_dwt_svd_enhanced.png'
+
+            output_path = os.path.join('static/outputs', output_filename)
+            enhanced_output_path = os.path.join('static/outputs', enhanced_output_filename)
+
+            Image.fromarray(watermarked_image).save(output_path)
+            Image.fromarray(enhanced_watermarked_image).save(enhanced_output_path)
+
+            # After processing, show download links
+            return render_template('Make watermark_DWT+SVD.html', 
+                                   download_link=output_filename, 
+                                   enhanced_download_link=enhanced_output_filename)
 
     return render_template('Make watermark_DWT+SVD.html')
 
