@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 import pywt
 from numpy.linalg import svd
+import cv2
 
 app = Flask(__name__)
 
@@ -151,19 +152,18 @@ def detect_watermark_watermarked_page():
 @app.route('/delete-watermark', methods=['GET', 'POST'])
 def page2():
     if request.method == 'POST':
-        # รับพารามิเตอร์จากฟอร์ม เช่น ไฟล์รูปภาพและตำแหน่งลายน้ำ
-        image_file = request.files['image']
-        x = int(request.form['x'])
-        y = int(request.form['y'])
-        w = int(request.form['w'])
-        h = int(request.form['h'])
+        # รับพารามิเตอร์จากฟอร์ม เช่น ไฟล์รูปภาพที่ถูกลายน้ำ
+        marked_image = request.files['marked_image']
+        original_image = request.files['original_image']
 
         # บันทึกรูปภาพที่อัพโหลด
-        image_path = 'static/' + image_file.filename
-        image_file.save(image_path)
+        marked_image_path = 'static/' + marked_image.filename
+        original_image_path = 'static/' + original_image.filename
+        marked_image.save(marked_image_path)
+        original_image.save(original_image_path)
 
-        # ลบลายน้ำโดยเบลอบริเวณที่กำหนด
-        edited_image_path = remove_watermark(image_path, x, y, w, h)
+        # ฟังก์ชันลบลายน้ำจากภาพ
+        edited_image_path = remove_watermark(marked_image_path, original_image_path)
 
         return render_template('Delete watermark.html', edited_image=edited_image_path)
 

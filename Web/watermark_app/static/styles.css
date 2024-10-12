@@ -11,7 +11,6 @@ body {
 }
 
 .card {
-   margin-top: 100px;
    width: 100%;
    max-width: 500px;
    border-radius: 15px;
@@ -65,7 +64,7 @@ body {
 .content {
    position: relative;
    z-index: 2;
-   padding-top: 100px; 
+   padding-top: 70px; 
 }
 
 nav {
@@ -115,12 +114,12 @@ nav ul li a {
 
 .content h1 {
    font-size: 70px;
-   color: #ffffff;
+   color: #000000;
 }
 
 .content p {
    margin: 10px 0 30px;
-   color: #ffffff;
+   color: #000000;
    animation-delay: 0.5s;
 }
 
@@ -135,12 +134,10 @@ nav ul li a {
 }
 
 .feature-img {
-   width: 530px;
-   float: right;
-   position: absolute;
-   top: 30%;
-   bottom: 0;
-   right: 10%;
+    width: 420px; /* Adjust the width to fit the design */
+    position: absolute; /* Keep it absolute for better control */
+    top: 12%; /* Position it higher for better visibility */
+    right: 5%;
 }
 
 .feature-img.anim {
@@ -163,7 +160,7 @@ nav ul li a {
 .content ol {
    margin-top: 20px; /* เพิ่มระยะห่างระหว่างข้อความอธิบายกับปุ่ม */
    margin-left: 20px;
-   color: #ffffff; /* สีขาว */
+   color: #000000; /* สีขาว */
    line-height: 1.6; /* ปรับระยะห่างบรรทัดให้อ่านง่าย */
 }
 
@@ -172,9 +169,15 @@ nav ul li a {
 }
 
 .dwt {
-   text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
-   color: #ffffff; /* กำหนดสีข้อความเป็นสีขาว */
-   margin-top: 30px; /* เพิ่มระยะห่างจาก navigation */
+   background-color: #f8f9fa; /* Light background color */
+   border: 1px solid #dee2e6; /* Light border */
+   border-radius: 0.25rem; /* Rounded corners */
+   padding: 10px; /* Padding inside the box */
+   margin: 20px;
+}
+
+.dwt-description {
+   margin-bottom: 1rem; /* Space below description */
 }
 
 .dwt ol {
@@ -197,13 +200,6 @@ nav + .dwt {
    font-size: 24px; /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้น */
    font-weight: bold; /* ทำให้ตัวหนาเพื่อความชัดเจน */
    margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างเล็กน้อย */
-}
-
-.dwt-description {
-   font-size: 18px; /* ปรับขนาดตัวอักษร */
-   color: #ffffff; /* สีขาว */
-   margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
-   text-align: left; /* จัดให้อยู่ทางซ้าย (หรือเปลี่ยนเป็น center หากต้องการให้จัดกลาง) */
 }
 
 .dwt-svd {
@@ -238,30 +234,87 @@ nav + .dwt {
    list-style-position: inside; /* ทำให้ bullet อยู่ด้านใน */
 }
 
+/* Carousel Controls */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.carousel-control-prev, .carousel-control-next {
+   width: 5%; /* Adjust the width for better touch targets */
+   transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+   opacity: 0.7; /* Slightly transparent on hover */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1); /* White icons */
+}
+
+/* Carousel Inner */
+.carousel-inner {
+    margin-top: 20px; /* Increased margin for better spacing */
+    background-color: #fdfcfc; /* Light background for contrast */
+    border-radius: 10px; /* Soft corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.carousel {
+   max-width: 800px; /* Adjust this value to make the carousel smaller */
+   margin: 0 auto; /* Center the carousel horizontally */
+}
+
+/* Watermark Steps */
 .watermark-steps {
-   display: flex;
-   justify-content: space-between; /* Create space between the columns */
-   flex-wrap: wrap; /* Allow wrapping for smaller screens */
-   margin-top: 30px; /* Add margin for spacing */
+    position: relative;
+    padding: 20px 30px; /* More balanced padding */
+    justify-content: center;
 }
 
 .step {
-   flex: 1; /* Allow each step to grow equally */
-   min-width: 300px; /* Minimum width for each column */
-   margin: 10px; /* Space between the columns */
-   background-color: rgba(255, 255, 255, 0.8); /* Light background for readability */
-   border-radius: 10px; /* Rounded corners */
-   padding: 20px; /* Inner padding */
-   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    padding: 30px;
+    position: relative;
+    z-index: 1;
 }
 
-.content ol {
-   margin-top: 10px; /* Reduced margin for better spacing */
-   margin-left: 0; /* Align lists to the left */
-   color: #000; /* Change color for better contrast */
+/* Step Title */
+.step h3 {
+    font-size: 1.75rem;
+    margin-bottom: 20px; /* Better spacing from the content */
+    color: #495057; /* Darker text */
 }
 
-.content li {
-   margin-bottom: 5px; /* Reduced space between list items */
+.step p {
+   padding-left: 20px; /* Add padding to align the list properly */
+   color: black; /* Set text color to white */
 }
 
+/* Updated CSS */
+.step ol {
+   padding-left: 20px; /* Add padding to align the list properly */
+   color: black; /* Set text color to white */
+   animation-delay: 0.5s;
+}
+
+.step ol li {
+   margin-bottom: 10px; /* Better spacing between list items */
+   color: black; /* Ensure the list items are also white */
+}
+
+.carousel-indicators {
+   position: absolute;
+   bottom: 10px; /* Adjust as necessary */
+   left: 50%;
+   transform: translateX(-50%);
+   display: flex;
+   justify-content: center; /* This will center them horizontally */
+   width: 100%; /* Ensure it takes the full width */
+   padding-left: 0; /* Remove default padding */
+}

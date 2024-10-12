@@ -1,64 +1,102 @@
 <!-- page1.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Water Mark Picture</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- เพิ่มบรรทัดนี้ -->
-</head>
-<body>
-    {% include 'navigation.html' %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <title>Water Mark Picture</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+        <!-- เพิ่มบรรทัดนี้ -->
+    </head>
+    <body>
+        {% include 'navigation.html' %}
 
-    <div class="hero">
-        <div class="content">
-        <h1 class="anim">Make<br>Watermark</h1>
-        <p class="anim">
-            A watermark is a recognizable text or image overlay placed on digital content,<br> 
-            such as images, videos, or documents, to protect or signify ownership, authenticity,<br>  
-            or copyright. Watermarks are often semi-transparent and are placed over the content <br> 
-            in a way that does not obstruct its primary message but makes it harder for others to <br>
-            use the content without permission.
-        </p>
-        <a href="/make-watermark" class="bth anim">Make Now</a>
-        <div class="watermark-steps">
-            <div class="step">
-                <p class="anim">How to add a watermark: We have 2 options: DWT and DWT + SVD.</p>
-                <ol>
-                    <li>Select the image you want to add a watermark to (original image).</li>
-                    <li>Choose the image that will become the watermark.</li>
-                    <li>Upload both images.</li>
-                    <li>Wait for the system to create the watermark.</li>
-                    <li>Download your watermarked image.</li>
-                    <li>The Enhanced image is the one that adjusts the intensity of the watermark to make it more visible.</li>
-                </ol>
-            </div>
-            <div class="step">
-                <p class="anim">Steps to Detect a Watermark:</p>
-                <ol>
-                    <li>Upload Original Image: Select and upload the original image that you want to use for watermark detection.</li>
-                    <li>Upload Watermarked Image: Select and upload the image that you suspect may contain the watermark.</li>
-                    <li>Click the "Detect a Watermark" Button: Press the button labeled "Detect a Watermark" and wait for the system to analyze the images.</li>
-                    <li>Receive Detection Results: Once the analysis is complete, the system will notify you of the results. If a watermark is detected, the system will alert you that a watermark has been found. If no watermark is found, the system will inform you that no watermark is present.</li>
-                </ol>
-            </div>
-            <div class="step">
-                <p class="anim">Steps to Delete a Watermark:</p>
-                <ol>
-                    <li>Upload Original Image: Select and upload the original image that you want to use for watermark detection.</li>
-                    <li>Upload Watermarked Image: Select and upload the image that you suspect may contain the watermark.</li>
-                    <li>Click the "Delete a Watermark" Button: Press the button labeled "Delete Watermark" and wait for the system to analyze the images.</li>
-                    <li>Receive Detection Results: Once the process is done, you will receive the image with the watermark successfully removed.</li>
-                </ol>
+        <div class="hero">
+            <div class="content">
+                <h1 class="anim">
+                    Make<br />
+                    Watermark
+                </h1>
+                <p class="anim">
+                    A watermark is a recognizable text or image overlay placed on digital content,<br />
+                    such as images, videos, or documents, to protect or signify ownership, authenticity,<br />
+                    or copyright. Watermarks are often semi-transparent and are placed over the content <br />
+                    in a way that does not obstruct its primary message but makes it harder for others to <br />
+                    use the content without permission.
+                </p>
+                <a href="/make-watermark" class="bth anim">Make Now</a>
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="container watermark-steps step-one">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 step">
+                                        <h3 class="anim text-center">How to Add a Watermark</h3>
+                                        <p class="anim text-center">We have 2 options: DWT and DWT + SVD.</p>
+                                        <ol class="anim">
+                                            <li>Select the image you want to add a watermark to (original image).</li>
+                                            <li>Choose the image that will become the watermark.</li>
+                                            <li>Upload both images.</li>
+                                            <li>Wait for the system to create the watermark.</li>
+                                            <li>Download your watermarked image.</li>
+                                            <li>The Enhanced image adjusts the intensity of the watermark to make it more visible.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="container watermark-steps step-two">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 step">
+                                        <h3 class="anim text-center">Steps to Detect a Watermark</h3>
+                                        <ol class="anim">
+                                            <li>Upload Original Image: Select and upload the original image you want to use for watermark detection.</li>
+                                            <li>Upload Watermarked Image: Select and upload the image you suspect contains the watermark.</li>
+                                            <li>Click the "Detect a Watermark" button and wait for the system to analyze the images.</li>
+                                            <li>Receive detection results. If a watermark is found, the system will notify you.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="container watermark-steps step-three">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 step">
+                                        <h3 class="anim text-center">Steps to Delete a Watermark</h3>
+                                        <ol class="anim">
+                                            <li>Upload Original Image: Select and upload the original image for watermark detection.</li>
+                                            <li>Upload Watermarked Image: Select and upload the image you suspect contains the watermark.</li>
+                                            <li>Click the "Delete a Watermark" button and wait for the system to analyze the images.</li>
+                                            <li>Receive the image with the watermark successfully removed.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                
             </div>
         </div>
-        
-        </div>
-</div>
-    <img src="{{ url_for('static', filename='images/Screenshot.png') }}" class="feature-img anim">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+        <img src="{{ url_for('static', filename='images/Screenshot.png') }}" class="feature-img anim" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
 </html>
