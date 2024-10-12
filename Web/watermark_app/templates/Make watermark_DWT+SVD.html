@@ -11,6 +11,35 @@
     <body>
         {% include 'navigation.html' %}
 
+        <div class="dwt-svd">
+            <p class="anim">
+                <br>Steps for Applying a Watermark Using DWT+SVD:
+            </p>
+            
+            <!-- คำอธิบายเกี่ยวกับ DWT+SVD -->
+            <p class="dwt-svd-description">
+                DWT (Discrete Wavelet Transform) combined with SVD (Singular Value Decomposition) is an advanced watermarking technique. DWT helps decompose the image into different frequency sub-bands, while SVD allows us to embed the watermark with high resilience and quality retention. This method ensures that the watermark is less noticeable and more resistant to various image manipulations.
+            </p>
+            
+            <ol>
+                <li> Select the original image file:<br>  
+                    Choose the image you want to use as the base for embedding the watermark.
+                </li>
+                <li> Select the watermark image file:<br> 
+                    Choose the image that you wish to embed as a watermark.
+                </li>
+                <li> Upload and wait for the system to process:<br>  
+                    After selecting both images, upload them and wait for the system to apply the watermark using DWT+SVD.
+                </li>
+                <li> Download the processed images:<br>  
+                    After the watermarking process is complete, you can download two versions of the image:<br>  
+                    - <b>Download Watermarked Image:</b> The original watermarked image.<br>  
+                    - <b>Download Enhanced Watermarked Image:</b> An enhanced version of the watermarked image with improved visibility and resilience.
+                </li>
+            </ol>
+        </div>
+        
+
         <div class="container d-flex justify-content-center">
             <div class="card">
                 <div class="card-body">

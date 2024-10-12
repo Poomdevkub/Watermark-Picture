@@ -205,3 +205,35 @@ nav + .dwt {
    margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
    text-align: left; /* จัดให้อยู่ทางซ้าย (หรือเปลี่ยนเป็น center หากต้องการให้จัดกลาง) */
 }
+
+.dwt-svd {
+   text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+   color: #ffffff; /* สีของตัวอักษรเป็นสีขาว */
+   margin-top: 30px; /* เพิ่มระยะห่างจาก navigation */
+}
+
+.dwt-svd p.anim {
+   font-size: 24px; /* ขนาดตัวอักษรสำหรับหัวข้อใหญ่ */
+   font-weight: bold; /* ทำให้ตัวหนา */
+   margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
+}
+
+.dwt-svd-description {
+   font-size: 18px; /* ขนาดตัวอักษรของคำอธิบาย */
+   color: #ffffff; /* สีขาว */
+   margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
+   text-align: left; /* จัดให้อยู่ทางซ้าย */
+}
+
+.dwt-svd ol {
+   margin-top: 20px; /* เพิ่มระยะห่างด้านบน */
+   margin-left: 0; /* เอาระยะห่างซ้ายออก */
+   padding-left: 0; /* เอาระยะห่าง padding ซ้ายออก */
+   color: #ffffff; /* สีขาว */
+   line-height: 1.6; /* ปรับระยะห่างบรรทัดให้อ่านง่าย */
+}
+
+.dwt-svd li {
+   margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรายการ */
+   list-style-position: inside; /* ทำให้ bullet อยู่ด้านใน */
+}
