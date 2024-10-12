@@ -1,61 +1,39 @@
-<!-- page1.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Watermark</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- เพิ่มบรรทัดนี้ -->
-    <title>Page 1</title>
     <style>
-        body {
-            min-height: 100vh;
-            background-image: url('/static/images/modern.jpg');
-            background-position: center;
-            background-size: cover;
-            background-attachment: fixed; /* ทำให้พื้นหลังเลื่อนตามได้ */
-            padding: 10px 10%;
-            overflow: hidden;
-            position: relative;
-        }
+        /* สามารถเพิ่ม CSS ที่ต้องการได้ที่นี่ */
     </style>
 </head>
 <body>
-    {% include 'navigation.html' %}
-    
-    <div class="container d-flex justify-content-center"> 
-        <div class="card" style="width: 600px;">
+    {% include 'navigation.html' %} <!-- นำเข้า Navigation Bar หากมี -->
+
+    <div class="container d-flex justify-content-center">
+        <div class="card" style="width: 600px;"> <!-- กำหนดความกว้างของการ์ด -->
             <div class="card-body">
-                <h5 class="card-title text-center">Delete Watermark</h5>
-                <form method="POST" enctype="multipart/form-data">
-                    <label for="image">Upload Image:</label>
-                    <input type="file" name="image" required><br><br>
-                    
-                    <label for="x">X:</label>
-                    <input type="text" name="x" required><br><br>
-            
-                    <label for="y">Y:</label>
-                    <input type="text" name="y" required><br><br>
-            
-                    <label for="w">Width:</label>
-                    <input type="text" name="w" required><br><br>
-            
-                    <label for="h">Height:</label>
-                    <input type="text" name="h" required><br><br>
-            
-                    <button type="submit">Delete Watermark</button>
+                <h5 class="card-title text-center">Remove Watermark</h5>
+                <p class="card-text text-center">Upload your watermarked image to remove the watermark.</p>
+
+                <form action="/delete-watermark" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="image">Upload Watermarked Image:</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Remove Watermark</button>
                 </form>
-            </div>            
+
+                {% if download_link %}
+                    <h6 class="mt-3 text-center">Download Link:</h6>
+                    <a href="{{ url_for('download_file', filename=download_link) }}" class="btn btn-success btn-block">Download Image Without Watermark</a>
+                {% endif %}
+            </div>
         </div>
-       
     </div>
-
-   
-
-    {% if edited_image %}
-    <h2>Edited Image:</h2>
-    <img src="{{ edited_image }}" alt="Edited Image">
-    {% endif %}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>

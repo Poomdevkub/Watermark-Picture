@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, send_from_directory
 import os
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageEnhance
 import pywt
 from numpy.linalg import svd
-import cv2
+from scipy.ndimage import gaussian_filter
 
 app = Flask(__name__)
 
@@ -84,7 +84,6 @@ def make_watermark_dwt_page():
 
 #---
 
-
 @app.route('/make-watermark-dwt-svd', methods=['GET', 'POST'])
 def make_watermark_dwt_svd_page():
     if request.method == 'POST':
@@ -93,17 +92,30 @@ def make_watermark_dwt_svd_page():
         watermark_file = request.files['watermark']
 
         if image_file and watermark_file:
+            # Open the images
             image = Image.open(image_file)
             watermark = Image.open(watermark_file)
 
-            # Apply DWT+SVD watermarking
+            # Apply DWT and SVD watermarking (normal visibility)
             watermarked_image = dwt_svd_watermarking(image, watermark)
 
-            output_filename = 'watermarked_image_dwt_svd.png'
-            output_path = os.path.join('static/outputs', output_filename)
-            Image.fromarray(watermarked_image).save(output_path)
+            # Apply DWT and SVD watermarking (enhanced visibility)
+            enhanced_watermarked_image = dwt_svd_watermarking(image, watermark, enhanced=True)
 
-            return render_template('Make watermark.html', download_link=output_filename)
+            # Save the output images to the static/outputs folder
+            output_filename = 'watermarked_image_dwt_svd.png'
+            enhanced_output_filename = 'watermarked_image_dwt_svd_enhanced.png'
+
+            output_path = os.path.join('static/outputs', output_filename)
+            enhanced_output_path = os.path.join('static/outputs', enhanced_output_filename)
+
+            Image.fromarray(watermarked_image).save(output_path)
+            Image.fromarray(enhanced_watermarked_image).save(enhanced_output_path)
+
+            # After processing, show download links
+            return render_template('Make watermark_DWT+SVD.html', 
+                                   download_link=output_filename, 
+                                   enhanced_download_link=enhanced_output_filename)
 
     return render_template('Make watermark_DWT+SVD.html')
 
@@ -150,25 +162,49 @@ def detect_watermark_watermarked_page():
 
 
 @app.route('/delete-watermark', methods=['GET', 'POST'])
-def page2():
+def remove_watermark():
     if request.method == 'POST':
-        # รับพารามิเตอร์จากฟอร์ม เช่น ไฟล์รูปภาพที่ถูกลายน้ำ
-        marked_image = request.files['marked_image']
-        original_image = request.files['original_image']
+        image_file = request.files['image']
+        
+        if image_file:
+            watermarked_image = Image.open(image_file)
+            watermarked_array = np.array(watermarked_image)
 
-        # บันทึกรูปภาพที่อัพโหลด
-        marked_image_path = 'static/' + marked_image.filename
-        original_image_path = 'static/' + original_image.filename
-        marked_image.save(marked_image_path)
-        original_image.save(original_image_path)
+            # ใช้ค่าซิกม่าคงที่
+            sigma_value = 0.1  # ค่านี้ไม่ต้องให้ผู้ใช้เลือก
 
-        # ฟังก์ชันลบลายน้ำจากภาพ
-        edited_image_path = remove_watermark(marked_image_path, original_image_path)
+            # ใช้ Gaussian filter
+            if watermarked_array.ndim == 3:
+                channels = []
+                for i in range(3):
+                    filtered_channel = gaussian_filter(watermarked_array[:, :, i], sigma=sigma_value)
+                    channels.append(filtered_channel)
+                new_image_array = np.stack(channels, axis=-1)
+            else:
+                new_image_array = gaussian_filter(watermarked_array, sigma=sigma_value)
 
-        return render_template('Delete watermark.html', edited_image=edited_image_path)
+            new_image = Image.fromarray(np.uint8(new_image_array))
+
+            # ปรับความคมชัด
+            enhancer = ImageEnhance.Sharpness(new_image)
+            new_image_sharpened = enhancer.enhance(1.5)  # ปรับตามต้องการ
+
+            # ปรับคอนทราสต์
+            contrast_enhancer = ImageEnhance.Contrast(new_image_sharpened)
+            new_image_contrasted = contrast_enhancer.enhance(1.0)  # ปรับตามต้องการ
+
+            # ปรับความสว่าง
+            brightness_enhancer = ImageEnhance.Brightness(new_image_contrasted)
+            new_image_brightened = brightness_enhancer.enhance(1.0)  # ปรับตามต้องการ
+
+            # บันทึกภาพที่ไม่มีลายน้ำ
+            output_filename = 'output_image_without_watermark.png'
+            output_path = os.path.join('static/outputs', output_filename)
+            new_image_brightened.save(output_path)
+
+            return render_template('Delete watermark.html', download_link=output_filename)
 
     return render_template('Delete watermark.html')
-
 
 @app.route('/group-member')
 def page3():
