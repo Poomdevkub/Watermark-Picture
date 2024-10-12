@@ -20,23 +20,67 @@ def page1():
 @app.route('/make-watermark-dwt', methods=['GET', 'POST'])
 def make_watermark_dwt_page():
     if request.method == 'POST':
-        # Get the uploaded files
+        # รับไฟล์ภาพต้นฉบับและภาพลายน้ำ
         image_file = request.files['image']
         watermark_file = request.files['watermark']
+        alpha = float(request.form['alpha'])  # รับค่า alpha จากฟอร์ม
 
         if image_file and watermark_file:
-            image = Image.open(image_file)
-            watermark = Image.open(watermark_file)
+            # เปิดภาพ
+            image = Image.open(image_file).convert('RGB')
+            watermark = Image.open(watermark_file).convert('L')  # แปลงเป็นขาวดำสำหรับลายน้ำ
 
-            # watermarked_image = dwt_watermarking(image, watermark) ******************************
+            # แปลงภาพเป็น numpy array
+            img_array = np.array(image)
+            wm_array = np.array(watermark)
 
+            # แยกช่องสี R, G, B ของภาพต้นฉบับ
+            r_channel, g_channel, b_channel = img_array[..., 0], img_array[..., 1], img_array[..., 2]
+
+            # ฟังก์ชันสำหรับการแปลง DWT
+            def apply_dwt(channel):
+                coeffs = pywt.dwt2(channel, 'haar')
+                LL, (LH, HL, HH) = coeffs
+                return LL, (LH, HL, HH)
+
+            # นำลายน้ำไปใส่ในช่องสีแดง
+            LL_r, (LH_r, HL_r, HH_r) = apply_dwt(r_channel)
+
+            # Resize watermark ให้มีขนาดเท่ากับ LL_r ของช่องสีแดง
+            wm_array_resized = np.array(watermark.resize(LL_r.shape[::-1]))  # resize ขนาดลายน้ำให้ตรงกับ LL_r
+
+            # เพิ่มลายน้ำเข้าไปใน LL ของช่องสีแดง
+            LL_r_watermarked = LL_r + alpha * wm_array_resized
+
+            # ฟังก์ชันสำหรับการแปลงกลับ IDWT
+            def apply_idwt(LL, LH_HL_HH):
+                return pywt.idwt2((LL, LH_HL_HH), 'haar')
+
+            # แปลงกลับเป็นภาพที่ใส่ลายน้ำแล้ว
+            r_channel_watermarked = apply_idwt(LL_r_watermarked, (LH_r, HL_r, HH_r))
+
+            # รวมช่องสี R, G, B กลับเป็นภาพเดียว
+            watermarked_image = np.stack([r_channel_watermarked, g_channel, b_channel], axis=-1)
+
+            # จัดการค่าให้เหมาะสมกับภาพ
+            watermarked_image = np.clip(watermarked_image, 0, 255).astype(np.uint8)
+
+            # บันทึกภาพที่ใส่ลายน้ำแล้ว
             output_filename = 'watermarked_image_dwt.png'
             output_path = os.path.join('static/outputs', output_filename)
-            # Image.fromarray(watermarked_image).save(output_path) ******************************
 
-            return render_template('Make watermark.html', download_link=output_filename)
+            # ตรวจสอบว่าโฟลเดอร์สำหรับเก็บผลลัพธ์มีอยู่หรือไม่ หากไม่มีให้สร้างขึ้น
+            if not os.path.exists('static/outputs'):
+                os.makedirs('static/outputs')
+
+            Image.fromarray(watermarked_image).save(output_path)
+
+            # แสดงลิงค์ให้ดาวน์โหลดภาพ
+            return render_template('Make watermark_DWT.html', download_link=output_filename)
 
     return render_template('Make watermark_DWT.html')
+
+
 #---
 
 

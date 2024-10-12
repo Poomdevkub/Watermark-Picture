@@ -11,14 +11,14 @@
     <body>
         {% include 'navigation.html' %}
 
-        <div class="container d-flex justify-content-center">
-            <div class="card">
+        <div class="container d-flex justify-content-center mt-5">
+            <div class="card shadow" style="width: 30rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Watermarking</h5>
+                    <h5 class="card-title text-center">Watermarking</h5>
                     <p class="card-text text-center">Upload an image and watermark it using DWT.</p>
 
-                    <!-- Change the form action to point to /make-watermark -->
-                    <form action="/make-watermark" method="POST" enctype="multipart/form-data">
+                    <!-- Form action changed to /make-watermark-dwt for DWT watermarking -->
+                    <form action="/make-watermark-dwt" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="image">Select Image</label>
                             <input type="file" class="form-control" id="image" name="image" required />
@@ -27,13 +27,19 @@
                             <label for="watermark">Select Watermark</label>
                             <input type="file" class="form-control" id="watermark" name="watermark" required />
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                        <div class="form-group">
+                            <label for="alpha">Alpha (0.01 - 0.9): <span id="alphaValue">0.01</span></label>
+                            <input type="range" class="form-control-range" id="alpha" name="alpha" min="0.01" max="0.9" step="0.01" value="0.01" required 
+                                oninput="document.getElementById('alphaValue').innerText = this.value" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Upload and Watermark</button>
                     </form>
+                    
+                                   
 
-                    {% if download_link and enhanced_download_link %}
-                    <h6 class="mt-3 text-center">Download Links:</h6>
+                    {% if download_link %}
+                    <h6 class="mt-4 text-center">Download Your Watermarked Image:</h6>
                     <a href="{{ url_for('download_file', filename=download_link) }}" class="btn btn-success btn-block">Download Watermarked Image</a>
-                    <a href="{{ url_for('download_file', filename=enhanced_download_link) }}" class="btn btn-warning btn-block">Download Enhanced Watermarked Image</a>
                     {% endif %}
                 </div>
             </div>
