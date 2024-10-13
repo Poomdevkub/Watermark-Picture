@@ -9,38 +9,43 @@
     </head>
     <body>
         {% include 'navigation.html' %}
-        <div class="content dwt-text">
-            <div class="dwt mt-5">
-                <p class="anim">
+        <div class="content dwt-anim">
+            <div class="dwt dwt-text mt-5">
+                <h2>
                     Steps for Applying a Watermark Using DWT:
-                </p>
-                <p class="dwt-description">
-                    Discrete Wavelet Transform (DWT) is a mathematical technique used for image processing, which allows the decomposition of an image into different frequency sub-bands. This enables us to embed watermarks in specific
-                    sub-bands, making the watermark more resilient to various image manipulations. DWT helps preserve the quality of the image while maintaining the integrity of the watermark.
-                </p>
+                </h2>
+                <p class="dwt-description" style="text-indent: 2em;">
+                    Discrete Wavelet Transform (DWT) is a mathematical technique used for image processing, which allows the decomposition of an image into different frequency sub-bands. This enables us to embed watermarks in specific sub-bands, making the watermark more resilient to various image manipulations. DWT helps preserve the quality of the image while maintaining the integrity of the watermark.
+                </p>                
                 <ol>
                     <li>
                         Select the original image file:<br />
-                        Choose the image you want to use as the base for embedding the watermark.
-                    </li>
+                        <li>Choose the image you want to use as the base for embedding the watermark.</li>
+                    </li>                    
                     <li>
                         Select the watermark image file:<br />
-                        Choose the image that you wish to embed as a watermark.
+                        <ul class="sub-list">
+                        <li>Choose the image that you wish to embed as a watermark.</li>
+                        </ul>
                     </li>
                     <li>
                         Adjust the Alpha value (from 0.01 to 0.9):<br />
-                        Alpha represents the strength or visibility of the watermark. <br />
-                        A lower alpha value makes the watermark more transparent, <br />
-                        while a higher value makes it more visible.
+                        <ul class="sub-list">
+                            <li>Alpha represents the strength or visibility of the watermark.</li>
+                            <li>A lower alpha value makes the watermark more transparent while a higher value makes it more visible.</li>
+                        </ul>
                     </li>
                     <li>
                         Upload and wait for the system to process:<br />
-                        After selecting both images and adjusting the alpha value, <br />
-                        upload the images and wait for the system to generate the watermarked image.
+                        <ul class="sub-list">
+                            <li>After selecting both images and adjusting the alpha value, upload the images and wait for the system to generate the watermarked image.</li>
+                        </ul>
                     </li>
                     <li>
                         Download the processed image:<br />
-                        Once the watermark is successfully embedded, you can download the final image.
+                        <ul class="sub-list">
+                            <li>Once the watermark is successfully embedded, you can download the final image.</li>
+                        </ul>
                     </li>
                 </ol>
             </div>

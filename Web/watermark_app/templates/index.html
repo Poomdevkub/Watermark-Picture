@@ -13,19 +13,26 @@
         {% include 'navigation.html' %}
 
         <div class="hero">
-            <div class="content">
-                <h1 class="anim">
-                    Make<br />
-                    Watermark
-                </h1>
-                <p class="anim">
-                    A watermark is a recognizable text or image overlay placed on digital content,<br />
-                    such as images, videos, or documents, to protect or signify ownership, authenticity,<br />
-                    or copyright. Watermarks are often semi-transparent and are placed over the content <br />
-                    in a way that does not obstruct its primary message but makes it harder for others to <br />
-                    use the content without permission.
-                </p>
-                <a href="/make-watermark" class="bth anim">Make Now</a>
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 class="anim">
+                        Make Watermark
+                    </h1>
+                    <p class="anim">
+                        A watermark is a recognizable text or image overlay placed on digital content,
+                        such as images, videos, or documents, to protect or signify ownership, authenticity,
+                        or copyright. Watermarks are often semi-transparent and are placed over the content 
+                        in a way that does not obstruct its primary message but makes it harder for others to
+                        use the content without permission.
+                    </p>
+                    <a href="/make-watermark-dwt" class="bth anim">Make Now</a>
+                </div>
+                <div class="hero-image">
+                    <img src="{{ url_for('static', filename='images/Screenshot.png') }}" alt="Watermark App Screenshot" class="feature-img anim" />
+                </div>
+            </div>
+
+            <div class="carousel-anim py-5">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -37,10 +44,10 @@
                             <div class="container watermark-steps step-one">
                                 <div class="row justify-content-center">
                                     <div class="col-md-10 step">
-                                        <h3 class="anim text-center">How to Add a Watermark</h3>
-                                        <p class="anim text-center">We have 2 options: DWT and DWT + SVD.</p>
-                                        <ol class="anim">
-                                            <li>Select the image you want to add a watermark to (original image).</li>
+                                        <h3 class="text-center">How to Add a Watermark</h3>
+                                        <p class="text-center">We have 2 options: DWT and DWT + SVD.</p>
+                                        <ol>
+                                            <li>Select the image you want to add a watermark to (original image)</li>
                                             <li>Choose the image that will become the watermark.</li>
                                             <li>Upload both images.</li>
                                             <li>Wait for the system to create the watermark.</li>
@@ -55,8 +62,8 @@
                             <div class="container watermark-steps step-two">
                                 <div class="row justify-content-center">
                                     <div class="col-md-10 step">
-                                        <h3 class="anim text-center">Steps to Detect a Watermark</h3>
-                                        <ol class="anim">
+                                        <h3 class="text-center">Steps to Detect a Watermark</h3>
+                                        <ol>
                                             <li>Upload Original Image: Select and upload the original image you want to use for watermark detection.</li>
                                             <li>Upload Watermarked Image: Select and upload the image you suspect contains the watermark.</li>
                                             <li>Click the "Detect a Watermark" button and wait for the system to analyze the images.</li>
@@ -70,8 +77,8 @@
                             <div class="container watermark-steps step-three">
                                 <div class="row justify-content-center">
                                     <div class="col-md-10 step">
-                                        <h3 class="anim text-center">Steps to Delete a Watermark</h3>
-                                        <ol class="anim">
+                                        <h3 class="text-center">Steps to Delete a Watermark</h3>
+                                        <ol>
                                             <li>Upload Original Image: Select and upload the original image for watermark detection.</li>
                                             <li>Upload Watermarked Image: Select and upload the image you suspect contains the watermark.</li>
                                             <li>Click the "Delete a Watermark" button and wait for the system to analyze the images.</li>
@@ -91,10 +98,8 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-                
             </div>
         </div>
-        <img src="{{ url_for('static', filename='images/Screenshot.png') }}" class="feature-img anim" />
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
