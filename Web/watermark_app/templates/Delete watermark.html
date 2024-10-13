@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Watermark</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- เพิ่มบรรทัดนี้ -->
-    <style>
-        /* สามารถเพิ่ม CSS ที่ต้องการได้ที่นี่ */
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    {% include 'navigation.html' %} <!-- นำเข้า Navigation Bar หากมี -->
+    {% include 'navigation.html' %}
 
     <div class="container d-flex justify-content-center">
-        <div class="card" style="width: 600px;"> <!-- กำหนดความกว้างของการ์ด -->
+        <div class="card" style="width: 600px;">
             <div class="card-body">
                 <h5 class="card-title text-center">Remove Watermark</h5>
                 <p class="card-text text-center">Upload your watermarked image to remove the watermark.</p>

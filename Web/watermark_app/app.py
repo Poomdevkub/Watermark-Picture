@@ -1,12 +1,22 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for
 import os
 import numpy as np
 from PIL import Image, ImageEnhance
 import pywt
+import cv2
 from numpy.linalg import svd
 from scipy.ndimage import gaussian_filter
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = 'uploads'
+PROCESSED_FOLDER = 'processed'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['PROCESSED_FOLDER'] = PROCESSED_FOLDER
+
+# สร้างโฟลเดอร์สำหรับเก็บไฟล์ถ้ายังไม่มี
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
 # Ensure the output folder exists
 if not os.path.exists('static/outputs'):
@@ -170,41 +180,63 @@ def remove_watermark():
             watermarked_image = Image.open(image_file)
             watermarked_array = np.array(watermarked_image)
 
-            # ใช้ค่าซิกม่าคงที่
-            sigma_value = 0.1  # ค่านี้ไม่ต้องให้ผู้ใช้เลือก
+            # Step 1: Apply DWT to the watermarked image
+            def apply_dwt(image_channel):
+                coeffs = pywt.dwt2(image_channel, 'haar')
+                LL, (LH, HL, HH) = coeffs
+                return LL, (LH, HL, HH)
 
-            # ใช้ Gaussian filter
-            if watermarked_array.ndim == 3:
-                channels = []
-                for i in range(3):
-                    filtered_channel = gaussian_filter(watermarked_array[:, :, i], sigma=sigma_value)
-                    channels.append(filtered_channel)
-                new_image_array = np.stack(channels, axis=-1)
-            else:
-                new_image_array = gaussian_filter(watermarked_array, sigma=sigma_value)
+            r_channel, g_channel, b_channel = watermarked_array[..., 0], watermarked_array[..., 1], watermarked_array[..., 2]
 
-            new_image = Image.fromarray(np.uint8(new_image_array))
+            LL_r, (LH_r, HL_r, HH_r) = apply_dwt(r_channel)
+            LL_g, (LH_g, HL_g, HH_g) = apply_dwt(g_channel)
+            LL_b, (LH_b, HL_b, HH_b) = apply_dwt(b_channel)
 
-            # ปรับความคมชัด
-            enhancer = ImageEnhance.Sharpness(new_image)
-            new_image_sharpened = enhancer.enhance(1.5)  # ปรับตามต้องการ
+            # Step 2: Apply SVD to the LL components of each channel
+            def apply_svd(LL):
+                U, S, Vt = svd(LL, full_matrices=False)
+                return U, S, Vt
 
-            # ปรับคอนทราสต์
-            contrast_enhancer = ImageEnhance.Contrast(new_image_sharpened)
-            new_image_contrasted = contrast_enhancer.enhance(1.0)  # ปรับตามต้องการ
+            U_r, S_r, Vt_r = apply_svd(LL_r)
+            U_g, S_g, Vt_g = apply_svd(LL_g)
+            U_b, S_b, Vt_b = apply_svd(LL_b)
 
-            # ปรับความสว่าง
-            brightness_enhancer = ImageEnhance.Brightness(new_image_contrasted)
-            new_image_brightened = brightness_enhancer.enhance(1.0)  # ปรับตามต้องการ
+            # Step 3: Reduce the impact of watermark by modifying singular values
+            S_r_new = np.zeros_like(S_r)
+            S_g_new = np.zeros_like(S_g)
+            S_b_new = np.zeros_like(S_b)
 
-            # บันทึกภาพที่ไม่มีลายน้ำ
+            # Step 4: Reconstruct LL components
+            def reconstruct_svd(U, S, Vt):
+                return np.dot(U, np.dot(np.diag(S), Vt))
+
+            LL_r_clean = reconstruct_svd(U_r, S_r_new, Vt_r)
+            LL_g_clean = reconstruct_svd(U_g, S_g_new, Vt_g)
+            LL_b_clean = reconstruct_svd(U_b, S_b_new, Vt_b)
+
+            # Step 5: Apply inverse DWT
+            def apply_idwt(LL, LH_HL_HH):
+                return pywt.idwt2((LL, LH_HL_HH), 'haar')
+
+            r_channel_clean = apply_idwt(LL_r_clean, (LH_r, HL_r, HH_r))
+            g_channel_clean = apply_idwt(LL_g_clean, (LH_g, HL_g, HH_g))
+            b_channel_clean = apply_idwt(LL_b_clean, (LH_b, HL_b, HH_b))
+
+            # Combine channels
+            clean_image = np.stack([r_channel_clean, g_channel_clean, b_channel_clean], axis=-1)
+
+            # Step 6: Clip values to a valid range (0-255)
+            clean_image = np.clip(clean_image, 0, 255).astype(np.uint8)
+
+            # Save the cleaned image
             output_filename = 'output_image_without_watermark.png'
             output_path = os.path.join('static/outputs', output_filename)
-            new_image_brightened.save(output_path)
+            Image.fromarray(clean_image).save(output_path)
 
             return render_template('Delete watermark.html', download_link=output_filename)
 
     return render_template('Delete watermark.html')
+
 
 @app.route('/group-member')
 def page3():
