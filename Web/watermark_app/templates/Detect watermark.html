@@ -18,14 +18,14 @@
                 <h5 class="card-title text-center">Detect Watermark</h5>
                 <p class="card-text text-center">Upload your original and watermarked images to check for original.</p>
 
-                <form action="/detect-watermark-original" method="POST" enctype="multipart/form-data">
+                <form action="/detect-watermark" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="original_image">Upload Original Image:</label>
-                        <input type="file" class="form-control" id="original_image" name="original_image" accept="image/*" required>
+                        <input type="file" class="form-control py-1" id="original_image" name="original_image" accept="image/*" required>
                     </div>
                     <div class="form-group">
                         <label for="watermarked_image">Upload Watermarked Image:</label>
-                        <input type="file" class="form-control" id="watermarked_image" name="watermarked_image" accept="image/*" required>
+                        <input type="file" class="form-control py-1" id="watermarked_image" name="watermarked_image" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Detect Watermark</button>
                 </form>

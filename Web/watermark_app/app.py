@@ -119,8 +119,8 @@ def make_watermark_dwt_svd_page():
 
     return render_template('Make watermark_DWT+SVD.html')
 
-@app.route('/detect-watermark-original', methods=['GET', 'POST'])
-def detect_watermark_original_page():
+@app.route('/detect-watermark', methods=['GET', 'POST'])
+def detect_watermark_page():
     if request.method == 'POST':
         # รับไฟล์ภาพที่อัปโหลด
         original_image_file = request.files['original_image']
@@ -135,30 +135,9 @@ def detect_watermark_original_page():
             result = detect_watermark_svd(original_image, watermarked_image)
 
             # ส่งผลลัพธ์กลับไปยังผู้ใช้
-            return render_template('Detect watermark_Original.html', result=result)
+            return render_template('Detect watermark.html', result=result)
         
-    return render_template('Detect watermark_Original.html')
-
-
-@app.route('/detect-watermark-watermarked', methods=['GET', 'POST'])
-def detect_watermark_watermarked_page():
-    if request.method == 'POST':
-        # รับไฟล์ภาพที่อัปโหลด
-        original_image_file = request.files['original_image']
-        watermarked_image_file = request.files['watermarked_image']
-
-        if original_image_file and watermarked_image_file:
-            # เปิดภาพ
-            original_image = Image.open(original_image_file)
-            watermarked_image = Image.open(watermarked_image_file)
-
-            # ตรวจจับลายน้ำ
-            result = detect_watermark_svd(original_image, watermarked_image)
-
-            # ส่งผลลัพธ์กลับไปยังผู้ใช้
-            return render_template('Detect watermark_Watermarked.html', result=result)
-
-    return render_template('Detect watermark_Watermarked.html')
+    return render_template('Detect watermark.html')
 
 
 @app.route('/delete-watermark', methods=['GET', 'POST'])

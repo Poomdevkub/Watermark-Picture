@@ -361,15 +361,12 @@ nav + .dwt {
    color: black; /* Ensure the list items are also white */
 }
 
-.carousel-indicators {
-   position: absolute;
-   bottom: 10px; /* Adjust as necessary */
-   left: 50%;
-   transform: translateX(-50%);
-   display: flex;
-   justify-content: center; /* This will center them horizontally */
-   width: 100%; /* Ensure it takes the full width */
-   padding-left: 0; /* Remove default padding */
+.carousel-indicators li {
+   background-color: #696969; /* Change this to your desired color */
+}
+
+.carousel-indicators .active {
+   background-color: #ff15ef; /* Change this to your desired active indicator color */
 }
 
 .indent {
