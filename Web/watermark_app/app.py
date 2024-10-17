@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_from_directory
 import os
 import numpy as np
 from PIL import Image, ImageEnhance
+import cv2
 import pywt
 from numpy.linalg import svd
 from scipy.ndimage import gaussian_filter
@@ -265,17 +266,27 @@ def detect_watermark_svd(original_image, watermarked_image):
         _, S_original, _ = svd(LL_original, full_matrices=False)
         _, S_watermarked, _ = svd(LL_watermarked, full_matrices=False)
 
-        # Compare singular values
-        return np.allclose(S_original, S_watermarked, atol=0.1)  # Tolerance level for differences
+        # Compute difference between singular values
+        difference = np.linalg.norm(S_original - S_watermarked)
 
-    # Check watermark on each channel
-    r_detected = not check_watermark_channel(r_original, r_watermarked)
-    g_detected = not check_watermark_channel(g_original, g_watermarked)
-    b_detected = not check_watermark_channel(b_original, b_watermarked)
+        return difference
 
-    # If watermark detected in any channel, return True
-    return r_detected or g_detected or b_detected
+    # Check watermark on each channel and calculate differences
+    r_diff = check_watermark_channel(r_original, r_watermarked)
+    g_diff = check_watermark_channel(g_original, g_watermarked)
+    b_diff = check_watermark_channel(b_original, b_watermarked)
 
+    # Set thresholds for differences
+    threshold = 1.0  # Adjust this threshold based on testing
+    high_difference_threshold = 800.0
+
+    # Analyze the results based on the differences
+    if r_diff < threshold and g_diff < threshold and b_diff < threshold:
+        return "ไม่มีลายน้ำ"
+    elif r_diff > high_difference_threshold or g_diff > high_difference_threshold or b_diff > high_difference_threshold:
+        return "ภาพทั้งสองแตกต่างกันเกินไป"
+    else:
+        return "มีลายน้ำ"
 
 # ฟังก์ชันสำหรับเบลอลายน้ำ
 def remove_watermark(image_path, x, y, w, h):
