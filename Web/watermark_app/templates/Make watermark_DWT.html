@@ -9,46 +9,16 @@
     </head>
     <body>
         {% include 'navigation.html' %}
-        <div class="content dwt-anim">
-            <div class="dwt dwt-text mt-5">
-                <h2>
-                    Steps for Applying a Watermark Using DWT:
-                </h2>
-                <p class="dwt-description" style="text-indent: 2em;">
-                    Discrete Wavelet Transform (DWT) is a mathematical technique used for image processing, which allows the decomposition of an image into different frequency sub-bands. This enables us to embed watermarks in specific sub-bands, making the watermark more resilient to various image manipulations. DWT helps preserve the quality of the image while maintaining the integrity of the watermark.
-                </p>                
-                <ol>
-                    <li>
-                        Select the original image file:<br />
-                        <li>Choose the image you want to use as the base for embedding the watermark.</li>
-                    </li>                    
-                    <li>
-                        Select the watermark image file:<br />
-                        <ul class="sub-list">
-                        <li>Choose the image that you wish to embed as a watermark.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        Adjust the Alpha value (from 0.01 to 0.9):<br />
-                        <ul class="sub-list">
-                            <li>Alpha represents the strength or visibility of the watermark.</li>
-                            <li>A lower alpha value makes the watermark more transparent while a higher value makes it more visible.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        Upload and wait for the system to process:<br />
-                        <ul class="sub-list">
-                            <li>After selecting both images and adjusting the alpha value, upload the images and wait for the system to generate the watermarked image.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        Download the processed image:<br />
-                        <ul class="sub-list">
-                            <li>Once the watermark is successfully embedded, you can download the final image.</li>
-                        </ul>
-                    </li>
-                </ol>
+        <div class="content dwt-anim">  
+
+            <div class="hero-section-dwt">
+                <div class="hero-content-dwt">
+                    <h2 class="h2-dwt">
+                        Make Watermark DWT
+                    </h2>   
+                </div>
             </div>
+
             <div class="container d-flex justify-content-center py-5">
                 <div class="card shadow" style="width: 30rem;">
                     <div class="card-body">
@@ -77,6 +47,93 @@
                         <a href="{{ url_for('download_file', filename=download_link) }}" class="btn btn-success btn-block">Download Watermarked Image</a>
                         {% endif %}
                     </div>
+                </div>
+            </div>
+
+            <div class="carousel-anim py-5">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <!-- Page 1: Introduction to DWT -->
+                        <div class="carousel-item active">
+                            <div class="container watermark-steps step-one">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 step">
+                                        <h3 class="text-center">Steps for Applying a Watermark Using DWT</h3>
+                                        <p class="text-center">
+                                            Discrete Wavelet Transform (DWT) is a mathematical technique used for image processing, which allows the decomposition of an image into different frequency sub-bands. This enables us to embed watermarks in specific sub-bands, making the watermark more resilient to various image manipulations. DWT helps preserve the quality of the image while maintaining the integrity of the watermark.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Page 2: How to Apply DWT -->
+                        <div class="carousel-item">
+                            <div class="container watermark-steps step-two">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 step">
+                                        <h3 class="text-center">How to Do Discrete Wavelet Transform (DWT)</h3>
+                                        <ol>
+                                            <li>Select the original image file:
+                                                <ul class="sub-list">
+                                                    <li>Choose the image you want to use as the base for embedding the watermark.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Select the watermark image file:
+                                                <ul class="sub-list">
+                                                    <li>Choose the image that you wish to embed as a watermark.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Page 3: Adjust Alpha and Upload -->
+                        <div class="carousel-item">
+                            <div class="container watermark-steps step-three">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 step">
+                                        <h3 class="text-center">Final Steps for Embedding the Watermark</h3>
+                                        <ol>
+                                            <li>Adjust the Alpha value (from 0.01 to 0.9):
+                                                <ul class="sub-list">
+                                                    <li>Alpha represents the strength or visibility of the watermark.</li>
+                                                    <li>A lower alpha value makes the watermark more transparent, while a higher value makes it more visible.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Upload and wait for the system to process:
+                                                <ul class="sub-list">
+                                                    <li>After selecting both images and adjusting the alpha value, upload the images and wait for the system to generate the watermarked image.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Download the processed image:
+                                                <ul class="sub-list">
+                                                    <li>Once the watermark is successfully embedded, you can download the final image.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Carousel controls -->
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
         </div>

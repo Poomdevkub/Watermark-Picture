@@ -379,3 +379,22 @@ nav + .dwt {
     padding-top: 10px;
 }
 
+.hero-section-dwt {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 30px 10%;
+   margin-top: 60px;
+}
+
+.hero-content-dwt {
+   max-width: 80%;
+   color: #fff;
+}
+
+.h2-dwt {
+   font-size: 3.5rem;
+   font-weight: bold;
+   margin-bottom: 20px;
+   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.862);
+}
