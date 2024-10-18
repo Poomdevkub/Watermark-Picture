@@ -12,181 +12,63 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
     <!-- เพิ่มบรรทัดนี้ -->
-    <style>
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url("/static/images/modern.jpg");
-    background-size: cover;
-    background-position: center;
-    flex-direction: column;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto; /* Allow scrolling */
-}
-
-.content-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap; /* Wrap the cards for responsiveness */
-    margin-top: 75px;
-}
-
-.card {
-    width: 90%; /* Use percentage for responsiveness */
-    max-width: 300px; /* Limit max width for each card */
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 15px; /* Add spacing between cards */
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
-    color: #495057; /* Darker text for better readability */
-}
-
-.card-text {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #666; /* Softer color for text */
-}
-
-.member-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center;
-    margin: 10px auto;
-    display: block;
-    border: 3px solid #ddd; /* Add border for better visibility */
-}
-
-.hero-section-dwt {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-    margin-top: 20px;
-}
-
-.hero-content-dwt {
-    text-align: center;
-    color: #fff;
-}
-
-.h2-dwt {
-    font-size: 3.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.862);
-}
-
-/* Media Queries for responsiveness */
-@media (max-width: 768px) {
-    .card {
-        max-width: 90%;
-    }
-    .card-title {
-        font-size: 1.2rem;
-    }
-    .card-text {
-        font-size: 1rem;
-    }
-    .member-image {
-        width: 120px;
-        height: 120px;
-    }
-}
-
-@media (max-width: 480px) {
-    .card-title {
-        font-size: 1rem;
-    }
-    .card-text {
-        font-size: 0.9rem;
-    }
-    .member-image {
-        width: 100px;
-        height: 100px;
-    }
-    .content-container {
-        margin-top: 50px;
-    }
-    .h2-dwt {
-        font-size: 2.5rem; /* Reduce title size on small screens */
-    }
-}
-
-    </style>
   </head>
   <body>
     {% include 'navigation.html' %}
     <!-- Include Navigation Bar -->
-    <div class="content dwt-anim">
-      <div class="hero-section-dwt">
-        <div class="hero-content-dwt">
-          <h2 class="h2-dwt">Group Members.</h2>
+    <div class="content-group dwt-anim">
+      <div class="hero-section-group">
+        <div class="hero-content-group">
+          <h2 class="h2-dwt-group">Group Members.</h2>
         </div>
       </div>
 
       <div
-        class="content-container d-flex justify-content-center align-items-center flex-wrap"
+        class="content-container-group d-flex justify-content-center align-items-center flex-wrap"
+        style="margin-top: 10%"
       >
-        <div class="card">
+        <div class="card-group">
           <img
             src="{{ url_for('static', filename='images/member_a.jpg') }}"
             alt="Member A"
-            class="member-image"
+            class="member-image-group"
           />
           <div class="card-body">
-            <h5 class="card-title">นายสรวิชญ์ เพชรชนะ</h5>
-            <p class="card-text">รหัสนิสิต: 6420502179</p>
+            <h5 class="card-title-group">นายสรวิชญ์ เพชรชนะ</h5>
+            <p class="card-text-group">รหัสนิสิต: 6420502179</p>
           </div>
         </div>
-        <div class="card">
+        <div class="card-group">
           <img
             src="{{ url_for('static', filename='images/member_b.jpg') }}"
             alt="Member B"
-            class="member-image"
+            class="member-image-group"
           />
           <div class="card-body">
-            <h5 class="card-title">นางสาวกนกวรรณ เพ่งพินิจ</h5>
-            <p class="card-text">รหัสนิสิต: 6420503434</p>
+            <h5 class="card-title-group">นางสาวกนกวรรณ เพ่งพินิจ</h5>
+            <p class="card-text-group">รหัสนิสิต: 6420503434</p>
           </div>
         </div>
-        <div class="card">
+        <div class="card-group">
           <img
             src="{{ url_for('static', filename='images/member_c.jpg') }}"
             alt="Member C"
-            class="member-image"
+            class="member-image-group"
           />
           <div class="card-body">
-            <h5 class="card-title">นางสาวภัทรานิษฐ์ กระจ่างแจ่ม</h5>
-            <p class="card-text">รหัสนิสิต: 6420503663</p>
+            <h5 class="card-title-group">นางสาวภัทรานิษฐ์ กระจ่างแจ่ม</h5>
+            <p class="card-text-group">รหัสนิสิต: 6420503663</p>
           </div>
         </div>
-        <div class="card">
+        <div class="card-group">
           <img
             src="{{ url_for('static', filename='images/member_d.jpg') }}"
             alt="Member D"
-            class="member-image"
+            class="member-image-group"
           />
           <div class="card-body">
-            <h5 class="card-title">นายเพชรกล้า ประดิษฐ์มณีโชติ</h5>
-            <p class="card-text">รหัสนิสิต: 6420503655</p>
+            <h5 class="card-title-group">นายเพชรกล้า ประดิษฐ์มณีโชติ</h5>
+            <p class="card-text-group">รหัสนิสิต: 6420503655</p>
           </div>
         </div>
       </div>
