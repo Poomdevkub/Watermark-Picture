@@ -241,6 +241,9 @@ def dwt_svd_watermarking(image, watermark, enhanced=False):
     return watermarked_image.astype(np.uint8)
 
 def detect_watermark_svd(original_image, watermarked_image):
+    # Resize both images to the same size
+    watermarked_image = watermarked_image.resize(original_image.size)
+
     # Convert images to RGB
     original_image = original_image.convert('RGB')
     watermarked_image = watermarked_image.convert('RGB')
