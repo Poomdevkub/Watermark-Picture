@@ -13,6 +13,13 @@
 <body>
     {% include 'navigation.html' %} <!-- นำเข้า Navigation Bar หากมี -->
 
+    <div class="content dwt-anim">
+        <div class="hero-section-dwt">
+          <div class="hero-content-dwt">
+            <h2 class="h2-dwt">Delete Watermark</h2>
+          </div>
+        </div>
+
     <div class="content d-flex justify-content-center mt-5">
         <div class="card" style="width: 600px;"> <!-- กำหนดความกว้างของการ์ด -->
             <div class="card-body">
@@ -35,6 +42,86 @@
         </div>
     </div>
 
+    <div class="carousel-anim py-5">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="container watermark-steps step-one">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 step">
+                                <h3 class="text-center">Watermark Removal</h3>
+                                <p class="text-center">Watermark removal is the process of removing watermarks embedded in images. Watermarks are often used to prevent unauthorized use of images or to indicate ownership of those images. Watermark removal can occur for various reasons, such as restoring the original image or stealing the image. This process is often complex and requires special techniques to effectively remove the watermark while preserving the quality of the original image. Additionally, it is important to consider the legal and ethical implications of doing so.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container watermark-steps step-two">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 step">
+                                <h3 class="text-center">Techniques for Watermark Removal</h3>
+                                <ol>
+                                    <li>Using various techniques such as DWT (Discrete Wavelet Transform) and SVD (Singular Value Decomposition) to separate and analyze data in the image by eliminating information related to the watermark.</li>
+                                    <li>Applying signal filtering techniques to remove the watermark from the image.</li>
+                                    <li>Using AI or machine learning to learn the characteristics of the watermark and effectively remove it.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container watermark-steps step-three">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 step">
+                                <h3 class="text-center">Challenges in Watermark Removal</h3>
+                                <p>Effectively removing watermarks can be difficult, as watermarks are designed to be durable and not easily visible. Thus, watermark removal may affect the quality of the original image. If the watermark is made more complex, such as through multi-layer watermarking, removing it becomes even more challenging.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container watermark-steps step-four">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 step">
+                                <h3 class="text-center">Legal and Ethical Considerations</h3>
+                                <p>Removing watermarks from images that are not owned by oneself without permission may violate copyright laws and can have legal repercussions if done inappropriately.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container watermark-steps step-five">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 step">
+                                <h3 class="text-center">Steps to Remove a Watermark</h3>
+                                <ol>
+                                    <li>Upload Watermarked Image.</li>
+                                    <li>Upload Watermark Image.</li>
+                                    <li>Click "Delete Watermark."</li>
+                                    <li>Download the image after the watermark has been removed.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
