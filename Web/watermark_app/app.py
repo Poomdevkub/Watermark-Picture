@@ -306,6 +306,7 @@ def dwt_remove_watermark(image_with_watermark, watermark, alpha):
     r_removed = pywt.idwt2(r_coeffs2_removed, 'haar')
     
     image_without_watermark = cv2.merge((b_removed, g_removed, r_removed))
+    image_without_watermark = np.clip(image_without_watermark, 0, 255).astype(np.uint8)
     return image_without_watermark
 
 @app.route('/download/<filename>')
