@@ -8,7 +8,6 @@ body {
    background-attachment: fixed;
    background-position: center;
    background-size: cover;
-   margin-top: 100px;
 }
 
 .card {
@@ -39,27 +38,45 @@ body {
    font-family: 'Poppins', sans-serif;
 }
 
-.hero {
-   width: 100%;
-   min-height: 100vh;
-   background-image: url('/static/images/modern.jpg');
-   background-position: center;
-   background-size: cover;
-   background-attachment: fixed; /* ทำให้พื้นหลังเลื่อนตามได้ */
-   padding: 10px 10%;
-   overflow: hidden;
-   position: relative;
+.hero-section {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 30px 10%;
+   margin-top: 60px;
 }
 
-.hero::before {
-   content: ''; 
-   position: absolute; 
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   background-color: rgba(0, 0, 0, 0.178); /* ความทึบของพื้นหลัง */
-   z-index: 1;
+.hero-content {
+   max-width: 50%;
+   color: #fff;
+}
+
+.hero-content h1 {
+   font-size: 3.5rem;
+   font-weight: bold;
+   margin-bottom: 20px;
+}
+
+.hero p {
+   font-size: 1.2rem;
+   margin-bottom: 30px;
+}
+
+.hero-btn:hover {
+   background-color: #003bb3;
+}
+
+.hero-image {
+   max-width: 50%;
+   display: flex;
+   justify-content: center;
+}
+
+.hero-image img {
+   width: 80%;
+   height: auto;
+   border-radius: 10px;
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .content {
@@ -100,7 +117,7 @@ nav ul li a {
    padding: 14px 40px;
    color: #fff;
    background-image: linear-gradient(45deg, #df4881, #c430d7);
-   font-size: 14px;
+   font-size: 20px;
    border-radius: 30px;
    border-top-right-radius: 0;
    transition: all 0.5s ease;
@@ -108,19 +125,19 @@ nav ul li a {
 
 .bth:hover {
    background-image: linear-gradient(45deg, #c430d7, #df4881);
-   padding: 16px 85px; /* ขยายขนาดของปุ่มเล็กน้อย */
+   color: #ffffff;
+   padding: 16px 50px; /* ขยายขนาดของปุ่มเล็กน้อย */
    transform: scale(1.05); /* ขยายปุ่มเล็กน้อย */
    border-top-right-radius: 30px;
+   text-decoration: none;
 }
 
 .content h1 {
    font-size: 70px;
-   color: #000000;
 }
 
 .content p {
    margin: 10px 0 30px;
-   color: #000000;
    animation-delay: 0.5s;
 }
 
@@ -130,38 +147,67 @@ nav ul li a {
    animation-delay: 1s;
 }
 
-.bth:hover {
-   border-top-right-radius: 30px;
-}
-
-.feature-img {
-    width: 420px; /* Adjust the width to fit the design */
-    position: absolute; /* Keep it absolute for better control */
-    top: 12%; /* Position it higher for better visibility */
-    right: 5%;
-}
-
+/* Feature Image Specific Animation */
 .feature-img.anim {
-   animation-delay: 1.5s;
+   animation: moveRight 1s ease-in-out forwards;
 }
 
+/* General Animation for other elements */
 .anim {
    opacity: 0;
    transform: translateY(30px);
-   animation: moveup 0.5s linear forwards;
+   animation: moveLeft 1s ease-in-out forwards;
 }
 
+.carousel-anim {
+   animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+   from {
+       opacity: 0;
+   }
+   to {
+       opacity: 1;
+   }
+}
+
+/* Keyframes for vertical movement (used by other elements with .anim) */
 @keyframes moveup {
    100% {
        opacity: 1;
-       transform: translateY(0px);
+       transform: translateY(0px); /* Moves upwards */
    }
 }
+
+/* Keyframes for right-to-left movement (used by .feature-img) */
+@keyframes moveRight {
+   0% {
+       opacity: 0;
+       transform: translateX(100%); /* Start off-screen to the right */
+   }
+   100% {
+       opacity: 1;
+       transform: translateX(0); /* Slide into the final position */
+   }
+}
+
+@keyframes moveLeft {
+   0% {
+       opacity: 0;
+       transform: translateX(-100%); /* Start off-screen to the left */
+   }
+   100% {
+       opacity: 1;
+       transform: translateX(0); /* Slide into the final position */
+   }
+}
+
 
 .content ol {
    margin-top: 20px; /* เพิ่มระยะห่างระหว่างข้อความอธิบายกับปุ่ม */
    margin-left: 20px;
-   color: #000000; /* สีขาว */
+   color: #ffffff; /* สีขาว */
    line-height: 1.6; /* ปรับระยะห่างบรรทัดให้อ่านง่าย */
 }
 
@@ -169,16 +215,22 @@ nav ul li a {
    margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรายการ */
 }
 
-.dwt {
-   background-color: #f8f9fa; /* Light background color */
-   border: 1px solid #dee2e6; /* Light border */
-   border-radius: 0.25rem; /* Rounded corners */
+.dwt {   
    padding: 10px; /* Padding inside the box */
    margin: 20px;
 }
 
+.dwt-text{
+   color: #ffffff; 
+}
+
 .dwt-description {
    margin-bottom: 1rem; /* Space below description */
+}
+
+.dwt-anim{
+   opacity: 0; /* Start invisible */
+   animation: fadeIn 1s forwards; /* Apply fadeIn animation */
 }
 
 .dwt ol {
@@ -309,13 +361,40 @@ nav + .dwt {
    color: black; /* Ensure the list items are also white */
 }
 
-.carousel-indicators {
-   position: absolute;
-   bottom: 10px; /* Adjust as necessary */
-   left: 50%;
-   transform: translateX(-50%);
+.carousel-indicators li {
+   background-color: #696969; /* Change this to your desired color */
+}
+
+.carousel-indicators .active {
+   background-color: #ff15ef; /* Change this to your desired active indicator color */
+}
+
+.indent {
+    margin-bottom: 0.5em; /* Space between this item and the next */
+}
+
+.sub-list {
+    list-style-type: circle; /* Use circle style for nested list */
+    padding-left: 2em; /* Additional indentation for nested elements */
+    padding-top: 10px;
+}
+
+.hero-section-dwt {
    display: flex;
-   justify-content: center; /* This will center them horizontally */
-   width: 100%; /* Ensure it takes the full width */
-   padding-left: 0; /* Remove default padding */
+   justify-content: space-between;
+   align-items: center;
+   padding: 30px 10%;
+   margin-top: 60px;
+}
+
+.hero-content-dwt {
+   max-width: 80%;
+   color: #fff;
+}
+
+.h2-dwt {
+   font-size: 3.5rem;
+   font-weight: bold;
+   margin-bottom: 20px;
+   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.862);
 }

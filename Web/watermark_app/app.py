@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_from_directory, redirect
 import os
 import numpy as np
 from PIL import Image, ImageEnhance
+import cv2
 import pywt
 import cv2
 from numpy.linalg import svd
@@ -129,8 +130,8 @@ def make_watermark_dwt_svd_page():
 
     return render_template('Make watermark_DWT+SVD.html')
 
-@app.route('/detect-watermark-original', methods=['GET', 'POST'])
-def detect_watermark_original_page():
+@app.route('/detect-watermark', methods=['GET', 'POST'])
+def detect_watermark_page():
     if request.method == 'POST':
         # รับไฟล์ภาพที่อัปโหลด
         original_image_file = request.files['original_image']
@@ -145,30 +146,9 @@ def detect_watermark_original_page():
             result = detect_watermark_svd(original_image, watermarked_image)
 
             # ส่งผลลัพธ์กลับไปยังผู้ใช้
-            return render_template('Detect watermark_Original.html', result=result)
+            return render_template('Detect watermark.html', result=result)
         
-    return render_template('Detect watermark_Original.html')
-
-
-@app.route('/detect-watermark-watermarked', methods=['GET', 'POST'])
-def detect_watermark_watermarked_page():
-    if request.method == 'POST':
-        # รับไฟล์ภาพที่อัปโหลด
-        original_image_file = request.files['original_image']
-        watermarked_image_file = request.files['watermarked_image']
-
-        if original_image_file and watermarked_image_file:
-            # เปิดภาพ
-            original_image = Image.open(original_image_file)
-            watermarked_image = Image.open(watermarked_image_file)
-
-            # ตรวจจับลายน้ำ
-            result = detect_watermark_svd(original_image, watermarked_image)
-
-            # ส่งผลลัพธ์กลับไปยังผู้ใช้
-            return render_template('Detect watermark_Watermarked.html', result=result)
-
-    return render_template('Detect watermark_Watermarked.html')
+    return render_template('Detect watermark.html')
 
 
 @app.route('/delete-watermark', methods=['GET', 'POST'])
@@ -306,6 +286,9 @@ def dwt_svd_watermarking(image, watermark, enhanced=False):
     return watermarked_image.astype(np.uint8)
 
 def detect_watermark_svd(original_image, watermarked_image):
+    # Resize both images to the same size
+    watermarked_image = watermarked_image.resize(original_image.size)
+
     # Convert images to RGB
     original_image = original_image.convert('RGB')
     watermarked_image = watermarked_image.convert('RGB')
@@ -331,17 +314,27 @@ def detect_watermark_svd(original_image, watermarked_image):
         _, S_original, _ = svd(LL_original, full_matrices=False)
         _, S_watermarked, _ = svd(LL_watermarked, full_matrices=False)
 
-        # Compare singular values
-        return np.allclose(S_original, S_watermarked, atol=0.1)  # Tolerance level for differences
+        # Compute difference between singular values
+        difference = np.linalg.norm(S_original - S_watermarked)
 
-    # Check watermark on each channel
-    r_detected = not check_watermark_channel(r_original, r_watermarked)
-    g_detected = not check_watermark_channel(g_original, g_watermarked)
-    b_detected = not check_watermark_channel(b_original, b_watermarked)
+        return difference
 
-    # If watermark detected in any channel, return True
-    return r_detected or g_detected or b_detected
+    # Check watermark on each channel and calculate differences
+    r_diff = check_watermark_channel(r_original, r_watermarked)
+    g_diff = check_watermark_channel(g_original, g_watermarked)
+    b_diff = check_watermark_channel(b_original, b_watermarked)
 
+    # Set thresholds for differences
+    threshold = 1.0  # Adjust this threshold based on testing
+    high_difference_threshold = 800.0
+
+    # Analyze the results based on the differences
+    if r_diff < threshold and g_diff < threshold and b_diff < threshold:
+        return "ไม่มีลายน้ำ"
+    elif r_diff > high_difference_threshold or g_diff > high_difference_threshold or b_diff > high_difference_threshold:
+        return "ภาพทั้งสองแตกต่างกันเกินไป"
+    else:
+        return "มีลายน้ำ"
 
 # ฟังก์ชันสำหรับเบลอลายน้ำ
 def remove_watermark(image_path, x, y, w, h):
