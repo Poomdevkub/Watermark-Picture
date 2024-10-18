@@ -174,55 +174,68 @@ def detect_watermark_watermarked_page():
 @app.route('/delete-watermark', methods=['GET', 'POST'])
 def remove_watermark():
     if request.method == 'POST':
+        # รับภาพต้นฉบับที่มีลายน้ำและภาพลายน้ำ
         image_file = request.files['image']
-        
-        if image_file:
-            watermarked_image = Image.open(image_file)
-            watermarked_array = np.array(watermarked_image)
+        watermark_file = request.files['watermark']
 
-            # Step 1: Apply DWT to the watermarked image
+        if image_file and watermark_file:
+            watermarked_image = Image.open(image_file)
+            watermark_image = Image.open(watermark_file)
+
+            watermarked_array = np.array(watermarked_image)
+            watermark_array = np.array(watermark_image)
+
+            # Step 1: Apply DWT to the watermarked image and watermark image
             def apply_dwt(image_channel):
                 coeffs = pywt.dwt2(image_channel, 'haar')
                 LL, (LH, HL, HH) = coeffs
                 return LL, (LH, HL, HH)
 
-            r_channel, g_channel, b_channel = watermarked_array[..., 0], watermarked_array[..., 1], watermarked_array[..., 2]
+            def apply_dwt_to_all_channels(image_array):
+                r_channel, g_channel, b_channel = image_array[..., 0], image_array[..., 1], image_array[..., 2]
+                LL_r, (LH_r, HL_r, HH_r) = apply_dwt(r_channel)
+                LL_g, (LH_g, HL_g, HH_g) = apply_dwt(g_channel)
+                LL_b, (LH_b, HL_b, HH_b) = apply_dwt(b_channel)
+                return (LL_r, LL_g, LL_b), (LH_r, HL_r, HH_r), (LH_g, HL_g, HH_g), (LH_b, HL_b, HH_b)
 
-            LL_r, (LH_r, HL_r, HH_r) = apply_dwt(r_channel)
-            LL_g, (LH_g, HL_g, HH_g) = apply_dwt(g_channel)
-            LL_b, (LH_b, HL_b, HH_b) = apply_dwt(b_channel)
+            (LL_r_wm, LL_g_wm, LL_b_wm), (LH_r_wm, HL_r_wm, HH_r_wm), (LH_g_wm, HL_g_wm, HH_g_wm), (LH_b_wm, HL_b_wm, HH_b_wm) = apply_dwt_to_all_channels(watermarked_array)
+            (LL_r_wmkt, LL_g_wmkt, LL_b_wmkt), _, _, _ = apply_dwt_to_all_channels(watermark_array)
 
-            # Step 2: Apply SVD to the LL components of each channel
+            # Step 2: Apply SVD to the LL components of each channel for watermarked and watermark images
             def apply_svd(LL):
                 U, S, Vt = svd(LL, full_matrices=False)
                 return U, S, Vt
 
-            U_r, S_r, Vt_r = apply_svd(LL_r)
-            U_g, S_g, Vt_g = apply_svd(LL_g)
-            U_b, S_b, Vt_b = apply_svd(LL_b)
+            U_r_wm, S_r_wm, Vt_r_wm = apply_svd(LL_r_wm)
+            U_g_wm, S_g_wm, Vt_g_wm = apply_svd(LL_g_wm)
+            U_b_wm, S_b_wm, Vt_b_wm = apply_svd(LL_b_wm)
 
-            # Step 3: Reduce the impact of watermark by modifying singular values
-            S_r_new = np.zeros_like(S_r)
-            S_g_new = np.zeros_like(S_g)
-            S_b_new = np.zeros_like(S_b)
+            U_r_wmkt, S_r_wmkt, Vt_r_wmkt = apply_svd(LL_r_wmkt)
+            U_g_wmkt, S_g_wmkt, Vt_g_wmkt = apply_svd(LL_g_wmkt)
+            U_b_wmkt, S_b_wmkt, Vt_b_wmkt = apply_svd(LL_b_wmkt)
 
-            # Step 4: Reconstruct LL components
+            # Step 3: Reduce the impact of watermark by subtracting singular values of watermark from the watermarked image
+            S_r_new = S_r_wm - S_r_wmkt
+            S_g_new = S_g_wm - S_g_wmkt
+            S_b_new = S_b_wm - S_b_wmkt
+
+            # Step 4: Reconstruct LL components without watermark
             def reconstruct_svd(U, S, Vt):
                 return np.dot(U, np.dot(np.diag(S), Vt))
 
-            LL_r_clean = reconstruct_svd(U_r, S_r_new, Vt_r)
-            LL_g_clean = reconstruct_svd(U_g, S_g_new, Vt_g)
-            LL_b_clean = reconstruct_svd(U_b, S_b_new, Vt_b)
+            LL_r_clean = reconstruct_svd(U_r_wm, S_r_new, Vt_r_wm)
+            LL_g_clean = reconstruct_svd(U_g_wm, S_g_new, Vt_g_wm)
+            LL_b_clean = reconstruct_svd(U_b_wm, S_b_new, Vt_b_wm)
 
-            # Step 5: Apply inverse DWT
+            # Step 5: Apply inverse DWT to get the clean image channels
             def apply_idwt(LL, LH_HL_HH):
                 return pywt.idwt2((LL, LH_HL_HH), 'haar')
 
-            r_channel_clean = apply_idwt(LL_r_clean, (LH_r, HL_r, HH_r))
-            g_channel_clean = apply_idwt(LL_g_clean, (LH_g, HL_g, HH_g))
-            b_channel_clean = apply_idwt(LL_b_clean, (LH_b, HL_b, HH_b))
+            r_channel_clean = apply_idwt(LL_r_clean, (LH_r_wm, HL_r_wm, HH_r_wm))
+            g_channel_clean = apply_idwt(LL_g_clean, (LH_g_wm, HL_g_wm, HH_g_wm))
+            b_channel_clean = apply_idwt(LL_b_clean, (LH_b_wm, HL_b_wm, HH_b_wm))
 
-            # Combine channels
+            # Combine channels to form the clean image
             clean_image = np.stack([r_channel_clean, g_channel_clean, b_channel_clean], axis=-1)
 
             # Step 6: Clip values to a valid range (0-255)
