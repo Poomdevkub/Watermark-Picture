@@ -144,45 +144,24 @@ def detect_watermark_page():
 @app.route('/delete-watermark', methods=['GET', 'POST'])
 def remove_watermark():
     if request.method == 'POST':
-        image_file = request.files['image']
-        
-        if image_file:
-            watermarked_image = Image.open(image_file)
-            watermarked_array = np.array(watermarked_image)
+        image_file = request.files['image_with_watermark']  # ภาพที่สงสัยว่ามีลายน้ำ
+        watermark_file = request.files['watermark_image']    # ภาพลายน้ำ
+        alpha = float(request.form['alpha'])                  # ค่า alpha
 
-            # ใช้ค่าซิกม่าคงที่
-            sigma_value = 0.1  # ค่านี้ไม่ต้องให้ผู้ใช้เลือก
+        # อ่านภาพที่สงสัยว่ามีลายน้ำ
+        image_with_watermark = cv2.imdecode(np.frombuffer(image_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
-            # ใช้ Gaussian filter
-            if watermarked_array.ndim == 3:
-                channels = []
-                for i in range(3):
-                    filtered_channel = gaussian_filter(watermarked_array[:, :, i], sigma=sigma_value)
-                    channels.append(filtered_channel)
-                new_image_array = np.stack(channels, axis=-1)
-            else:
-                new_image_array = gaussian_filter(watermarked_array, sigma=sigma_value)
+        # อ่านภาพลายน้ำและแปลงเป็น grayscale
+        watermark = cv2.imdecode(np.frombuffer(watermark_file.read(), np.uint8), cv2.IMREAD_GRAYSCALE)
 
-            new_image = Image.fromarray(np.uint8(new_image_array))
+        # เรียกใช้ฟังก์ชันในการลบลายน้ำ
+        image_without_watermark = dwt_remove_watermark(image_with_watermark, watermark, alpha)
 
-            # ปรับความคมชัด
-            enhancer = ImageEnhance.Sharpness(new_image)
-            new_image_sharpened = enhancer.enhance(1.5)  # ปรับตามต้องการ
-
-            # ปรับคอนทราสต์
-            contrast_enhancer = ImageEnhance.Contrast(new_image_sharpened)
-            new_image_contrasted = contrast_enhancer.enhance(1.0)  # ปรับตามต้องการ
-
-            # ปรับความสว่าง
-            brightness_enhancer = ImageEnhance.Brightness(new_image_contrasted)
-            new_image_brightened = brightness_enhancer.enhance(1.0)  # ปรับตามต้องการ
-
-            # บันทึกภาพที่ไม่มีลายน้ำ
-            output_filename = 'output_image_without_watermark.png'
-            output_path = os.path.join('static/outputs', output_filename)
-            new_image_brightened.save(output_path)
-
-            return render_template('Delete watermark.html', download_link=output_filename)
+        # เซฟภาพที่ไม่มีลายน้ำ
+        output_filename = 'image_without_watermark.png'
+        output_path = os.path.join('static/outputs', output_filename)
+        cv2.imwrite(output_path, image_without_watermark)
+        return send_from_directory('static/outputs', output_filename, as_attachment=True)
 
     return render_template('Delete watermark.html')
 
@@ -292,26 +271,42 @@ def detect_watermark_svd(original_image, watermarked_image):
         return "มีลายน้ำ"
 
 # ฟังก์ชันสำหรับเบลอลายน้ำ
-def remove_watermark(image_path, x, y, w, h):
-    # โหลดรูปภาพ
-    image = cv2.imread(image_path)
+def dwt_remove_watermark(image_with_watermark, watermark, alpha):
+    # แยกภาพออกเป็นแชนแนลสี
+    b_with_wm, g_with_wm, r_with_wm = cv2.split(image_with_watermark)
 
-    # ส่วนที่ลายน้ำอยู่ (ระบุตำแหน่ง x, y, w, h)
-    watermark_area = image[y:y+h, x:x+w]
+    # ทำ DWT บนแต่ละแชนแนลของภาพที่มีลายน้ำ
+    b_coeffs2 = pywt.dwt2(b_with_wm, 'haar')
+    g_coeffs2 = pywt.dwt2(g_with_wm, 'haar')
+    r_coeffs2 = pywt.dwt2(r_with_wm, 'haar')
 
-    # เบลอบริเวณที่มีลายน้ำ
-    blurred = cv2.GaussianBlur(watermark_area, (51, 51), 0)
+    # แยกชิ้นส่วนของภาพ (approximation (LL), horizontal (LH), vertical (HL), diagonal (HH))
+    b_LL, (b_LH, b_HL, b_HH) = b_coeffs2
+    g_LL, (g_LH, g_HL, g_HH) = g_coeffs2
+    r_LL, (r_LH, r_HL, r_HH) = r_coeffs2
 
-    # นำบริเวณที่เบลอกลับไปใส่ในภาพเดิม
-    image[y:y+h, x:x+w] = blurred
+    # ปรับขนาดลายน้ำให้ตรงกับขนาด LL ของช่องสีแดง
+    watermark_resized = cv2.resize(watermark, (r_LL.shape[1], r_LL.shape[0]))
 
-    # บันทึกรูปภาพที่ถูกแก้ไข
-    output_path = 'static/edited_image.jpg'
-    cv2.imwrite(output_path, image)
+    # ตรวจสอบขนาดของภาพลายน้ำ
+    if watermark_resized.shape != r_LL.shape:
+        raise ValueError(f"Watermark resized shape {watermark_resized.shape} does not match LL shape {r_LL.shape}")
 
-    return output_path
+    # ลบลายน้ำออกโดยใช้ค่า alpha และลายน้ำ
+    r_LL_removed = r_LL - (alpha * watermark_resized)  # ใช้ wm_array_resized ที่เป็น 2 มิติ
 
+    # รวมภาพเข้าด้วยกันอีกครั้ง
+    b_coeffs2_removed = (b_LL, (b_LH, b_HL, b_HH))
+    g_coeffs2_removed = (g_LL, (g_LH, g_HL, g_HH))
+    r_coeffs2_removed = (r_LL_removed, (r_LH, r_HL, r_HH))
 
+    # Inverse DWT เพื่อคืนภาพกลับมา
+    b_removed = pywt.idwt2(b_coeffs2_removed, 'haar')
+    g_removed = pywt.idwt2(g_coeffs2_removed, 'haar')
+    r_removed = pywt.idwt2(r_coeffs2_removed, 'haar')
+    
+    image_without_watermark = cv2.merge((b_removed, g_removed, r_removed))
+    return image_without_watermark
 
 @app.route('/download/<filename>')
 def download_file(filename):
