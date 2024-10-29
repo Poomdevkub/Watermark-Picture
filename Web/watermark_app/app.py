@@ -84,6 +84,61 @@ def make_watermark_dwt_page():
 
 
 #---
+@app.route('/make-watermark-dct', methods=['GET', 'POST'])
+def make_watermark():
+    if request.method == 'POST':
+        # รับภาพและลายน้ำจากการร้องขอ
+        file_image = request.files['image']
+        file_watermark = request.files['watermark']
+        alpha = float(request.form['alpha'])
+
+        # อ่านภาพและลายน้ำจากไฟล์
+        image = cv2.imdecode(np.frombuffer(file_image.read(), np.uint8), cv2.IMREAD_COLOR)
+        watermark = cv2.imdecode(np.frombuffer(file_watermark.read(), np.uint8), cv2.IMREAD_COLOR)
+
+        # ฝังลายน้ำลงในภาพสี
+        watermarked_image = embed_watermark_color(image, watermark, alpha)
+
+        # เข้ารหัสภาพที่มีลายน้ำเพื่อส่งกลับ
+        _, encoded_image = cv2.imencode('.jpg', watermarked_image)
+        response = encoded_image.tobytes()
+
+        return response, 200, {'Content-Type': 'image/jpeg'}
+    return render_template('Make watermark_DCT.html')
+
+def embed_watermark_color(image, watermark, alpha):
+    # Resize watermark to fit into the image
+    watermark = cv2.resize(watermark, (image.shape[1] // 4, image.shape[0] // 4))
+
+    # Split the image into its color channels
+    b_channel, g_channel, r_channel = cv2.split(image)
+    watermark_gray = cv2.cvtColor(watermark, cv2.COLOR_BGR2GRAY)
+
+    # Apply DCT to each channel and embed the watermark in each
+    b_channel_dct = cv2.dct(np.float32(b_channel))
+    g_channel_dct = cv2.dct(np.float32(g_channel))
+    r_channel_dct = cv2.dct(np.float32(r_channel))
+
+    rows, cols = watermark_gray.shape
+    b_channel_dct[:rows, :cols] += watermark_gray * alpha
+    g_channel_dct[:rows, :cols] += watermark_gray * alpha
+    r_channel_dct[:rows, :cols] += watermark_gray * alpha
+
+    # Apply inverse DCT to get the watermarked channels
+    b_channel_idct = cv2.idct(b_channel_dct)
+    g_channel_idct = cv2.idct(g_channel_dct)
+    r_channel_idct = cv2.idct(r_channel_dct)
+
+    # Merge the channels back together
+    watermarked_image = cv2.merge((
+        np.uint8(np.clip(b_channel_idct, 0, 255)),
+        np.uint8(np.clip(g_channel_idct, 0, 255)),
+        np.uint8(np.clip(r_channel_idct, 0, 255))
+    ))
+
+    return watermarked_image
+
+
 
 @app.route('/make-watermark-dwt-svd', methods=['GET', 'POST'])
 def make_watermark_dwt_svd_page():

@@ -215,47 +215,47 @@ nav ul li a {
    margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรายการ */
 }
 
-.dwt {   
+.dwt, .dct  {   
    padding: 10px; /* Padding inside the box */
    margin: 20px;
 }
 
-.dwt-text{
+.dwt-text, .dct-text{
    color: #ffffff; 
 }
 
-.dwt-description {
+.dwt-description, .dct-description {
    margin-bottom: 1rem; /* Space below description */
 }
 
-.dwt-anim{
+.dwt-anim, .dct-anim {
    opacity: 0; /* Start invisible */
    animation: fadeIn 1s forwards; /* Apply fadeIn animation */
 }
 
-.dwt ol {
+.dwt ol, .dct ol {
    margin-top: 20px;
    margin-left: 0; /* จัดรายการให้อยู่ตรงกลาง */
    padding-left: 0; /* เอาระยะห่างเริ่มต้นของรายการออก */
 }
 
-.dwt li {
+.dwt li, .dct li {
    margin-bottom: 10px; /* เพิ่มระยะห่างระหว่างรายการ */
    list-style-position: inside; /* ทำให้ bullet อยู่ด้านใน */
 }
 
 /* เพิ่มระยะห่างจากส่วน navigation */
-nav + .dwt {
+nav + .dwt , nav + .dct {
    margin-top: 50px; /* เพิ่มระยะห่างเพิ่มเติมจาก nav */
 }
 
-.dwt p.anim {
+.dwt p.anim , .dct p.anim {
    font-size: 24px; /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้น */
    font-weight: bold; /* ทำให้ตัวหนาเพื่อความชัดเจน */
    margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างเล็กน้อย */
 }
 
-.dwt-svd {
+.dwt-svd  {
    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
    color: #ffffff; /* สีของตัวอักษรเป็นสีขาว */
    margin-top: 30px; /* เพิ่มระยะห่างจาก navigation */
@@ -379,7 +379,7 @@ nav + .dwt {
     padding-top: 10px;
 }
 
-.hero-section-dwt {
+.hero-section-dwt, .hero-section-dct {
    display: flex;
    justify-content: space-between;
    align-items: center;
@@ -387,12 +387,12 @@ nav + .dwt {
    margin-top: 60px;
 }
 
-.hero-content-dwt {
+.hero-content-dwt, .hero-content-dct {
    max-width: 80%;
    color: #fff;
 }
 
-.h2-dwt {
+.h2-dwt, .h2-dct {
    font-size: 3.5rem;
    font-weight: bold;
    margin-bottom: 20px;
